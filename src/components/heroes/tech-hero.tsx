@@ -4,9 +4,9 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Button } from "../../../../components/ui/button"
+import { Button } from "@/components/ui/button"
 import { ArrowRight, Database, Cpu, Layers } from "lucide-react"
-import { cn } from "../../../../lib/utils"
+import { cn } from "@/lib/utils"
 
 export interface ButtonConfig {
     label: string
