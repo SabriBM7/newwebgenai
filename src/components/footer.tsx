@@ -1,114 +1,112 @@
 import Link from "next/link"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react"
+import type { MenuItem } from "@/types/index"
 
-export default function Footer() {
+interface FooterColumn {
+    title: string
+    links: MenuItem[]
+}
+
+interface FooterProps {
+    logo?: string
+    logoUrl?: string
+    columns?: FooterColumn[]
+    bottomText?: string
+    backgroundColor?: string
+    textColor?: string
+    accentColor?: string
+    keywords?: string[]
+}
+
+export default function Footer({
+                                   logo = "WebGenAI",
+                                   logoUrl,
+                                   columns,
+                                   bottomText,
+                                   backgroundColor = "#1f2937",
+                                   textColor = "#ffffff",
+                                   accentColor = "#3b82f6",
+                                   keywords = [],
+                               }: FooterProps) {
+    // Default columns if none are provided
+    const defaultColumns: FooterColumn[] = [
+        {
+            title: "Product",
+            links: [
+                { label: "Features", link: "#features" },
+                { label: "Pricing", link: "#pricing" },
+                { label: "Examples", link: "/examples" },
+                { label: "Documentation", link: "#docs" },
+            ],
+        },
+        {
+            title: "Company",
+            links: [
+                { label: "About", link: "#about" },
+                { label: "Blog", link: "#blog" },
+                { label: "Careers", link: "#careers" },
+                { label: "Contact", link: "#contact" },
+            ],
+        },
+        {
+            title: "Resources",
+            links: [
+                { label: "Help Center", link: "#help" },
+                { label: "Community", link: "#community" },
+                { label: "Tutorials", link: "#tutorials" },
+                { label: "Webinars", link: "#webinars" },
+            ],
+        },
+    ]
+
+    // Use provided columns or fall back to default columns
+    const displayColumns = columns || defaultColumns
+
+    // Use provided bottomText or generate default
+    const displayBottomText = bottomText || `© ${new Date().getFullYear()} ${logo}. All rights reserved.`
+
+    const footerStyle = {
+        backgroundColor: backgroundColor,
+        color: textColor,
+    }
+
+    const accentStyle = {
+        color: accentColor,
+    }
+
     return (
-        <footer className="w-full border-t bg-background">
-            <div className="container px-4 md:px-6 py-8 md:py-12">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-                    <div className="space-y-4">
-                        <Link href="/public" className="flex items-center gap-2">
-                            <span className="text-xl font-bold">WebGenAI</span>
+        <footer className="pt-16 pb-8" style={footerStyle} data-keywords={keywords.join(",")}>
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                    <div className="lg:col-span-2">
+                        <Link href="/" className="inline-block mb-4 font-bold text-xl">
+                            {logoUrl ? <img src={logoUrl || "/placeholder.svg"} alt={logo} className="h-8" /> : logo}
                         </Link>
-                        <p className="text-sm text-muted-foreground">
-                            Create professional websites through simple conversation with our AI-powered platform.
-                        </p>
-                        <div className="flex space-x-4">
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="#">
-                                    <Facebook className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="#">
-                                    <Twitter className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="#">
-                                    <Instagram className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="#">
-                                    <Linkedin className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="#">
-                                    <Github className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-medium">Product</h4>
-                        <ul className="space-y-2 text-sm">
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Features
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Templates
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Pricing
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    FAQ
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-medium">Company</h4>
-                        <ul className="space-y-2 text-sm">
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    About
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Blog
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Careers
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                                    Contact
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-medium">Subscribe to our newsletter</h4>
-                        <div className="flex space-x-2">
-                            <Input type="email" placeholder="Enter your email" />
-                            <Button type="submit">Subscribe</Button>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                            Get the latest news and updates about our AI website generator.
+                        <p className="opacity-80 max-w-md">
+                            Create professional websites in minutes with our AI-powered platform. No coding required. Just describe
+                            what you want, and our AI will build it for you.
                         </p>
                     </div>
+
+                    {displayColumns.map((column, index) => (
+                        <div key={index}>
+                            <h3 className="font-semibold text-lg mb-4">{column.title}</h3>
+                            <ul className="space-y-2">
+                                {column.links.map((link, linkIndex) => (
+                                    <li key={linkIndex}>
+                                        <Link href={link.link} className="opacity-80 hover:opacity-100 transition-opacity">
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
-                <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-                    <p>© {new Date().getFullYear()} WebGenAI. All rights reserved.</p>
+
+                <div className="border-t border-gray-700 pt-8 text-center opacity-70 text-sm">
+                    <p>{displayBottomText}</p>
                 </div>
             </div>
         </footer>
     )
 }
-

@@ -3,32 +3,9 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Sparkles, Search } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-export interface MenuItem {
-    label: string
-    link: string
-}
-
-export interface CreativeHeaderProps {
-    logo: string
-    logoUrl?: string
-    backgroundColor?: string
-    textColor?: string
-    menu: MenuItem[]
-    style?: "creative" | "artistic" | "playful"
-    keywords?: string[]
-    fontSize?: string
-    height?: string
-    animation?: "bounce" | "float" | "none"
-    buttonStyle?: "rounded" | "pill" | "square"
-    logoAnimation?: boolean
-    searchEnabled?: boolean
-    colorAccent?: string
-    borderStyle?: "none" | "dotted" | "dashed"
-    itemSpacing?: "tight" | "normal" | "wide"
-}
+import type { CreativeHeaderProps } from "@/lib/types"
 
 export default function CreativeHeader({
                                            logo,
@@ -36,102 +13,86 @@ export default function CreativeHeader({
                                            backgroundColor = "#ffffff",
                                            textColor = "#333333",
                                            menu,
-                                           style = "creative",
-                                           keywords = ["creative", "design", "artistic"],
+                                           keywords = ["creative", "design", "innovation"],
                                            fontSize = "16px",
                                            height = "80px",
-                                           animation = "float",
-                                           buttonStyle = "rounded",
-                                           logoAnimation = true,
-                                           searchEnabled = false,
-                                           colorAccent = "#ff6b6b",
-                                           borderStyle = "none",
-                                           itemSpacing = "normal",
+                                           sticky = true,
+                                           animation = "fade-in",
+                                           accentColor = "#ff6b6b",
+                                           transparent = false,
+                                           buttonText = "Contact",
                                        }: CreativeHeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
 
-    // Style generators
-    const getAnimationClass = () => {
-        switch (animation) {
-            case "bounce": return "hover:animate-bounce"
-            case "float": return "hover:animate-pulse"
-            default: return ""
-        }
+    // Use transparent background only when at the top of the page
+    const headerStyle = {
+        backgroundColor: transparent && !scrolled ? "transparent" : backgroundColor,
+        color: textColor,
+        height,
+        fontSize,
+        boxShadow: scrolled ? "0 2px 10px rgba(0,0,0,0.1)" : "none",
     }
-
-    const getStyleClasses = () => {
-        switch (style) {
-            case "artistic": return "font-serif italic"
-            case "playful": return "font-mono tracking-wide"
-            default: return "font-sans"
-        }
-    }
-
-    const getButtonClasses = () => {
-        switch (buttonStyle) {
-            case "pill": return "rounded-full px-6"
-            case "square": return "rounded-none"
-            default: return "rounded-md"
-        }
-    }
-
-    const getBorderClass = () => {
-        switch (borderStyle) {
-            case "dotted": return "border-dotted"
-            case "dashed": return "border-dashed"
-            default: return "border-none"
-        }
-    }
-
-    const getSpacingClass = () => {
-        switch (itemSpacing) {
-            case "tight": return "gap-2"
-            case "wide": return "gap-8"
-            default: return "gap-6"
-        }
-    }
-
-    // Fixed hover style for mobile links
-    const mobileLinkClass = cn(
-        "text-sm font-medium transition-colors",
-        `hover:text-[${colorAccent}]` // Dynamic hover color
-    )
 
     return (
         <header
             className={cn(
-                "w-full transition-all duration-300 border-b",
-                getStyleClasses(),
-                getBorderClass()
+                "w-full transition-all duration-300",
+                sticky && "fixed top-0 left-0 z-50",
+                transparent && "absolute",
             )}
-            style={{
-                backgroundColor,
-                color: textColor,
-                height,
-                fontSize,
-                borderColor: colorAccent,
-            }}
+            style={headerStyle}
         >
-            {/* Header content remains the same until mobile navigation */}
+            <div className="container mx-auto px-4 h-full flex items-center justify-between">
+                <Link href="/" className="flex items-center gap-2">
+                    {logoUrl ? (
+                        <img src={logoUrl || "/placeholder.svg"} alt={logo} className="h-10" />
+                    ) : (
+                        <div className="font-bold text-2xl">{logo}</div>
+                    )}
+                </Link>
 
-            {/* Mobile Navigation */}
+                <nav className="hidden md:flex items-center gap-8">
+                    {menu.map((item) => (
+                        <Link
+                            key={item.label}
+                            href={item.link}
+                            className="text-sm font-medium hover:text-primary transition-colors relative group"
+                        >
+                            {item.label}
+                            <span
+                                className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"
+                                style={{ backgroundColor: accentColor }}
+                            ></span>
+                        </Link>
+                    ))}
+                    <Button variant="default" size="sm">
+                        {buttonText}
+                    </Button>
+                </nav>
+
+                <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </Button>
+            </div>
+
+            {/* Mobile menu */}
             {isMenuOpen && (
-                <div className="container md:hidden py-4 pb-6 border-t">
+                <div className="md:hidden py-4 px-4 border-t" style={{ backgroundColor }}>
                     <nav className="flex flex-col space-y-4">
-                        {menu.map((item, index) => (
+                        {menu.map((item) => (
                             <Link
-                                key={index}
+                                key={item.label}
                                 href={item.link}
-                                className={mobileLinkClass}
-                                style={{ color: textColor }}
+                                className="text-sm font-medium hover:text-primary transition-colors"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {item.label}
                             </Link>
                         ))}
-
-                        {/* Rest of mobile content remains the same */}
+                        <Button variant="default" size="sm" className="mt-2">
+                            {buttonText}
+                        </Button>
                     </nav>
                 </div>
             )}

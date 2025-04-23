@@ -1,41 +1,69 @@
 import Link from "next/link"
-import { Button } from "./ui/button"
+import { cn, getButtonClasses, getTextAlignmentClasses } from "@/lib/utils"
+import type { ButtonType, ButtonStyle, TextAlignment } from "@/types/index"
 import { ArrowRight } from "lucide-react"
 
-export default function CTASection() {
+interface CTASectionProps {
+    title?: string
+    subtitle?: string
+    description?: string
+    buttons?: ButtonType[]
+    backgroundColor?: string
+    textColor?: string
+    buttonStyle?: ButtonStyle
+    textAlignment?: TextAlignment
+    fullWidth?: boolean
+    keywords?: string[]
+}
+
+export default function CTASection({
+                                       title = "Ready to Create Your Website?",
+                                       subtitle = "Start building your website today with our AI-powered platform",
+                                       description = "No coding required. Just describe what you want, and our AI will build it for you.",
+                                       buttons,
+                                       backgroundColor = "#3b82f6",
+                                       textColor = "#ffffff",
+                                       buttonStyle = "rounded",
+                                       textAlignment = "center",
+                                       fullWidth = false,
+                                       keywords = [],
+                                   }: CTASectionProps) {
+    // Default buttons if none are provided
+    const defaultButtons: ButtonType[] = [
+        { label: "Get Started Free", link: "/create", type: "primary" },
+        { label: "Schedule Demo", link: "#demo", type: "secondary" },
+    ]
+
+    // Use provided buttons or fall back to default buttons
+    const displayButtons = buttons || defaultButtons
+
+    const textAlignmentClass = getTextAlignmentClasses(textAlignment)
+
+    const sectionStyle = {
+        backgroundColor: backgroundColor,
+        color: textColor,
+    }
+
     return (
-        <section id="try-now" className="w-full py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground">
-            <div className="container px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                            Ready to Create Your Website?
-                        </h2>
-                        <p className="max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                            Start building your website today with our AI-powered platform. No coding required.
-                        </p>
-                    </div>
-                    <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                        <Button size="lg" variant="secondary" asChild>
-                            <Link href="#">
-                                Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary"
-                            asChild
-                        >
-                            <Link href="#">Schedule Demo</Link>
-                        </Button>
-                    </div>
-                    <p className="text-sm text-primary-foreground/80 mt-4">
-                        No credit card required. Free plan includes 1 website with basic features.
-                    </p>
+        <section className="py-16 md:py-24" style={sectionStyle} data-keywords={keywords.join(",")}>
+            <div className={cn("px-4", fullWidth ? "w-full" : "container mx-auto")}>
+                <div className={cn("max-w-3xl mx-auto", textAlignmentClass)}>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+                    {subtitle && <p className="text-xl mb-4">{subtitle}</p>}
+                    {description && <p className="text-lg opacity-80 mb-8">{description}</p>}
+
+                    {displayButtons && displayButtons.length > 0 && (
+                        <div className="flex flex-wrap gap-4 justify-center">
+                            {displayButtons.map((button, index) => (
+                                <Link key={index} href={button.link} className={getButtonClasses(button.type, buttonStyle)}>
+                                    {button.label}
+                                    {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
     )
 }
-

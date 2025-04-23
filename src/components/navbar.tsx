@@ -12,7 +12,7 @@ export default function Navbar() {
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-16 items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Link href="/public" className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-2">
                         <span className="text-xl font-bold">WebGenAI</span>
                     </Link>
                 </div>
@@ -32,7 +32,7 @@ export default function Navbar() {
                         Benefits
                     </Link>
                     <Button asChild className="ml-4">
-                        <Link href="#try-now">Try Now</Link>
+                        <Link href="/create">Try Now</Link>
                     </Button>
                 </nav>
 
@@ -71,7 +71,7 @@ export default function Navbar() {
                             Benefits
                         </Link>
                         <Button asChild className="w-full mt-2" onClick={() => setIsMenuOpen(false)}>
-                            <Link href="#try-now">Try Now</Link>
+                            <Link href="/create">Try Now</Link>
                         </Button>
                     </nav>
                 </div>
@@ -79,4 +79,3 @@ export default function Navbar() {
         </header>
     )
 }
-
