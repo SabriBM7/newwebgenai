@@ -5,44 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getButtonClasses(type: "primary" | "secondary" | "tertiary", style: "rounded" | "flat" | "outlined") {
-  const baseClasses = "px-6 py-2 font-medium transition-colors duration-200"
-
-  const typeClasses = {
-    primary: {
-      rounded: "bg-primary text-white rounded-full hover:bg-primary/90",
-      flat: "bg-primary text-white hover:bg-primary/90",
-      outlined: "border-2 border-primary text-primary bg-transparent hover:bg-primary/10",
-    },
-    secondary: {
-      rounded: "bg-secondary text-white rounded-full hover:bg-secondary/90",
-      flat: "bg-secondary text-white hover:bg-secondary/90",
-      outlined: "border-2 border-secondary text-secondary bg-transparent hover:bg-secondary/10",
-    },
-    tertiary: {
-      rounded: "bg-muted text-foreground rounded-full hover:bg-muted/90",
-      flat: "bg-muted text-foreground hover:bg-muted/90",
-      outlined: "border-2 border-muted text-foreground bg-transparent hover:bg-muted/30",
-    },
-  }
-
-  return `${baseClasses} ${typeClasses[type][style]}`
-}
-
-export function getAnimationClasses(animation: "fade-in" | "slide-down" | "zoom-in" | "none") {
-  switch (animation) {
-    case "fade-in":
-      return "animate-fadeIn"
-    case "slide-down":
-      return "animate-slideDown"
-    case "zoom-in":
-      return "animate-zoomIn"
-    default:
-      return ""
-  }
-}
-
-export function getTextAlignmentClasses(alignment: "left" | "center" | "right") {
+export function getTextAlignmentClasses(alignment: string | undefined): string {
   switch (alignment) {
     case "left":
       return "text-left"
@@ -51,6 +14,52 @@ export function getTextAlignmentClasses(alignment: "left" | "center" | "right") 
     case "right":
       return "text-right"
     default:
-      return "text-left"
+      return "text-center"
+  }
+}
+
+export function getButtonClasses(type: string | undefined, style: string | undefined): string {
+  const baseClasses =
+      "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
+
+  // Size classes
+  let sizeClasses = "px-4 py-2"
+  if (style === "small") {
+    sizeClasses = "px-3 py-1 text-sm"
+  } else if (style === "large") {
+    sizeClasses = "px-6 py-3 text-lg"
+  }
+
+  // Type classes
+  let typeClasses = "bg-purple-600 text-white hover:bg-purple-700"
+  if (type === "secondary") {
+    typeClasses = "bg-gray-200 text-gray-800 hover:bg-gray-300"
+  } else if (type === "outline") {
+    typeClasses = "bg-transparent border border-current text-purple-600 hover:bg-purple-50"
+  } else if (type === "ghost") {
+    typeClasses = "bg-transparent text-purple-600 hover:bg-purple-50"
+  }
+
+  return `${baseClasses} ${sizeClasses} ${typeClasses}`
+}
+
+export function getAnimationClasses(animation: string | undefined): string {
+  switch (animation) {
+    case "fade-in":
+      return "animate-fade-in"
+    case "fade-up":
+      return "animate-fade-up"
+    case "fade-down":
+      return "animate-fade-down"
+    case "fade-left":
+      return "animate-fade-left"
+    case "fade-right":
+      return "animate-fade-right"
+    case "zoom-in":
+      return "animate-zoom-in"
+    case "zoom-out":
+      return "animate-zoom-out"
+    default:
+      return ""
   }
 }

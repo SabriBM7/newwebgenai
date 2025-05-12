@@ -1,120 +1,66 @@
-import { cn, getTextAlignmentClasses } from "@/lib/utils"
-import type { TextAlignment } from "@/types/index"
-import type { LucideIcon } from "lucide-react"
-import { MessageSquare, Code, Layout, PaintBucket, Globe, Download } from "lucide-react"
+import { CheckCircle, Code, Cpu, Globe, Palette, Zap } from "lucide-react"
 
-interface Feature {
-    title: string
-    description: string
-    icon?: LucideIcon
-    iconColor?: string
-}
-
-interface FeaturesSectionProps {
-    title?: string
-    subtitle?: string
-    features?: Feature[]
-    backgroundColor?: string
-    textColor?: string
-    accentColor?: string
-    columns?: 2 | 3 | 4
-    textAlignment?: TextAlignment
-    keywords?: string[]
-}
-
-export default function FeaturesSection({
-                                            title = "Key Features",
-                                            subtitle = "Our AI-powered platform makes website creation accessible to everyone",
-                                            features,
-                                            backgroundColor = "#ffffff",
-                                            textColor = "#000000",
-                                            accentColor = "#3b82f6",
-                                            columns = 3,
-                                            textAlignment = "center",
-                                            keywords = [],
-                                        }: FeaturesSectionProps) {
-    // Default features if none are provided
-    const defaultFeatures: Feature[] = [
+export default function FeaturesSection() {
+    const features = [
         {
-            icon: MessageSquare,
-            title: "AI-Powered Chatbot",
+            icon: <Cpu className="h-6 w-6 text-purple-400" />,
+            title: "AI-Powered Design",
             description:
-                "Uses natural language processing to understand your website requirements through simple conversation.",
-            iconColor: accentColor,
+                "Our advanced AI understands your needs and generates custom website designs tailored to your industry and goals.",
         },
         {
-            icon: Layout,
-            title: "Automated Website Generation",
-            description: "AI selects design templates, text, and components based on your preferences and industry.",
-            iconColor: accentColor,
+            icon: <Zap className="h-6 w-6 text-purple-400" />,
+            title: "Lightning Fast",
+            description: "Generate complete, responsive websites in minutes instead of days or weeks.",
         },
         {
-            icon: PaintBucket,
-            title: "Customization Tools",
-            description:
-                "User-friendly interface for modifying layouts, adding content, and adjusting styles without coding.",
-            iconColor: accentColor,
+            icon: <Palette className="h-6 w-6 text-purple-400" />,
+            title: "Customizable Templates",
+            description: "Choose from a variety of AI-generated templates or customize every aspect to match your brand.",
         },
         {
-            icon: Globe,
-            title: "Hosting & Export Options",
-            description: "Preview, download, or directly deploy your generated websites with just a few clicks.",
-            iconColor: accentColor,
-        },
-        {
-            icon: Code,
+            icon: <Code className="h-6 w-6 text-purple-400" />,
             title: "No Coding Required",
-            description: "Create professional websites without writing a single line of code or having technical expertise.",
-            iconColor: accentColor,
+            description:
+                "Create professional websites without writing a single line of code through our intuitive chat interface.",
         },
         {
-            icon: Download,
-            title: "Ready-to-Use Templates",
-            description: "Access a library of AI-optimized templates for various industries and purposes.",
-            iconColor: accentColor,
+            icon: <Globe className="h-6 w-6 text-purple-400" />,
+            title: "One-Click Publishing",
+            description: "Deploy your website instantly with our integrated hosting solution.",
+        },
+        {
+            icon: <CheckCircle className="h-6 w-6 text-purple-400" />,
+            title: "SEO Optimized",
+            description: "All websites are built with best practices for search engine optimization.",
         },
     ]
 
-    // Use provided features or fall back to default features
-    const displayFeatures = features || defaultFeatures
-
-    const textAlignmentClass = getTextAlignmentClasses(textAlignment)
-
-    const sectionStyle = {
-        backgroundColor: backgroundColor,
-        color: textColor,
-    }
-
-    const gridCols = {
-        2: "md:grid-cols-2",
-        3: "md:grid-cols-2 lg:grid-cols-3",
-        4: "md:grid-cols-2 lg:grid-cols-4",
-    }
-
     return (
-        <section className="py-16 md:py-24" style={sectionStyle} data-keywords={keywords.join(",")}>
+        <section className="py-20 bg-black">
             <div className="container mx-auto px-4">
-                <div className={cn("max-w-3xl mx-auto mb-16", textAlignmentClass)}>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-                    {subtitle && <p className="text-lg opacity-80">{subtitle}</p>}
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                        Everything you need to create amazing websites
+                    </h2>
+                    <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                        Our AI-powered platform makes website creation faster and easier than ever before
+                    </p>
                 </div>
 
-                <div className={`grid grid-cols-1 ${gridCols[columns]} gap-8`}>
-                    {displayFeatures.map((feature, index) => {
-                        const Icon = feature.icon
-
-                        return (
-                            <div key={index} className="p-6 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
-                                {Icon && (
-                                    <div className="mb-4">
-                                        <Icon size={32} style={{ color: feature.iconColor || accentColor }} />
-                                    </div>
-                                )}
-                                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                                <p className="opacity-80">{feature.description}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {features.map((feature, index) => (
+                        <div
+                            key={index}
+                            className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300"
+                        >
+                            <div className="bg-purple-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                                {feature.icon}
                             </div>
-                        )
-                    })}
+                            <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                            <p className="text-gray-400">{feature.description}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

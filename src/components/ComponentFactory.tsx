@@ -1,100 +1,99 @@
-// src/components/ComponentFactory.tsx
-"use client"
-
-import { COMPONENT_TYPES } from "@/lib/dataset"
-
-// Headers
-import CreativeHeader from "./headers/creative-header"
-import CorporateHeader from "./headers/corporate-header"
 import MinimalHeader from "./headers/minimal-header"
-import EcommerceHeader from "./headers/ecommerce-header"
-import EducationHeader from "./headers/education-header"
 import SaaSHeader from "./headers/saas-header"
+import EcommerceHeader from "./headers/ecommerce-header"
+import CorporateHeader from "./headers/corporate-header"
+import CreativeHeader from "./headers/creative-header"
+import EducationHeader from "./headers/education-header"
 
-// Heroes
 import StandardHero from "./heroes/StandardHero"
 import SplitHero from "./heroes/SplitHero"
 import VideoHero from "./heroes/VideoHero"
+import GradientHero from "./heroes/GradientHero"
+import VideoBackgroundHero from "./heroes/VideoBackgroundHero"
+import ParallaxHero from "./heroes/ParallaxHero"
 
-// Features
 import GridFeatures from "./features/GridFeatures"
+import CardFeatures from "./features/CardFeatures"
+import AnimatedFeatures from "./features/AnimatedFeatures"
+import TimelineFeatures from "./features/TimelineFeatures"
 
-// Pricing
-import PricingSection from "./pricing/PricingSection"
+import ModernFooter from "./footers/ModernFooter"
+import CreativeFooter from "./footers/CreativeFooter"
 
-// FAQ
-import FAQSection from "./faq/FAQSection"
-
-// Stats
-import StatsSection from "./stats/StatsSection"
-
-// Team
-import TeamSection from "./team/TeamSection"
-
-// Newsletter
-import NewsletterSection from "./newsletter/NewsletterSection"
-
-// Testimonials
-import TestimonialsSection from "./testimonials-section"
-
-// CTA
-import CTASection from "./cta-section"
-
-export default function ComponentFactory({
-                                             component,
-                                             variant,
-                                             props,
-                                         }: {
+interface ComponentFactoryProps {
+    type: "header" | "hero" | "features" | "footer"
     component: string
-    variant: string
-    props: any
-}) {
-    switch (component) {
-        case COMPONENT_TYPES.HEADER:
-            switch (variant) {
-                case "creative":
-                    return <CreativeHeader {...props} />
-                case "corporate":
-                    return <CorporateHeader {...props} />
-                case "minimal":
-                    return <MinimalHeader {...props} />
-                case "ecommerce":
-                    return <EcommerceHeader {...props} />
-                case "education":
-                    return <EducationHeader {...props} />
-                case "saas":
-                    return <SaaSHeader {...props} />
-                default:
-                    return <CreativeHeader {...props} />
-            }
-        case COMPONENT_TYPES.HERO:
-            switch (variant) {
-                case "standard":
-                    return <StandardHero {...props} />
-                case "split":
-                    return <SplitHero {...props} />
-                case "video":
-                    return <VideoHero {...props} />
-                default:
-                    return <StandardHero {...props} />
-            }
-        case COMPONENT_TYPES.FEATURES:
-            return <GridFeatures {...props} />
-        case "pricing":
-            return <PricingSection {...props} />
-        case "faq":
-            return <FAQSection {...props} />
-        case "stats":
-            return <StatsSection {...props} />
-        case "team":
-            return <TeamSection {...props} />
-        case "newsletter":
-            return <NewsletterSection {...props} />
-        case "testimonials":
-            return <TestimonialsSection {...props} />
-        case "cta":
-            return <CTASection {...props} />
-        default:
-            return null
+    data: any
+}
+
+export default function ComponentFactory({ type, component, data }: ComponentFactoryProps) {
+    // Header components
+    if (type === "header") {
+        switch (component) {
+            case "minimal":
+                return <MinimalHeader {...data} />
+            case "saas":
+                return <SaaSHeader {...data} />
+            case "ecommerce":
+                return <EcommerceHeader {...data} />
+            case "corporate":
+                return <CorporateHeader {...data} />
+            case "creative":
+                return <CreativeHeader {...data} />
+            case "education":
+                return <EducationHeader {...data} />
+            default:
+                return <MinimalHeader {...data} />
+        }
     }
+
+    // Hero components
+    if (type === "hero") {
+        switch (component) {
+            case "standard":
+                return <StandardHero {...data} />
+            case "split":
+                return <SplitHero {...data} />
+            case "video":
+                return <VideoHero {...data} />
+            case "gradient":
+                return <GradientHero {...data} />
+            case "videoBackground":
+                return <VideoBackgroundHero {...data} />
+            case "parallax":
+                return <ParallaxHero {...data} />
+            default:
+                return <StandardHero {...data} />
+        }
+    }
+
+    // Features components
+    if (type === "features") {
+        switch (component) {
+            case "grid":
+                return <GridFeatures {...data} />
+            case "card":
+                return <CardFeatures {...data} />
+            case "animated":
+                return <AnimatedFeatures {...data} />
+            case "timeline":
+                return <TimelineFeatures {...data} />
+            default:
+                return <GridFeatures {...data} />
+        }
+    }
+
+    // Footer components
+    if (type === "footer") {
+        switch (component) {
+            case "modern":
+                return <ModernFooter {...data} />
+            case "creative":
+                return <CreativeFooter {...data} />
+            default:
+                return <ModernFooter {...data} />
+        }
+    }
+
+    return null
 }

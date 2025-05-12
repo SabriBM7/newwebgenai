@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { cn, getButtonClasses, getTextAlignmentClasses } from "@/lib/utils"
-import type { ButtonType, ButtonStyle, TextAlignment } from "@/types"
+import type { ButtonType, ButtonStyle, TextAlignment } from "@/types/index"
 import { Play, Pause, Volume2, VolumeX } from "lucide-react"
 
 interface VideoHeroProps {

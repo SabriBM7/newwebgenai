@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -41,6 +45,19 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Add new Hostinger-inspired theme variables */
+  --color-purple-50: oklch(0.97 0.04 296.42);
+  --color-purple-100: oklch(0.94 0.07 296.42);
+  --color-purple-200: oklch(0.91 0.1 296.42);
+  --color-purple-300: oklch(0.87 0.13 296.42);
+  --color-purple-400: oklch(0.82 0.16 296.42);
+  --color-purple-500: oklch(0.76 0.19 296.42);
+  --color-purple-600: oklch(0.7 0.22 296.42);
+  --color-purple-700: oklch(0.64 0.24 296.42);
+  --color-purple-800: oklch(0.58 0.26 296.42);
+  --color-purple-900: oklch(0.52 0.28 296.42);
+  --color-purple-950: oklch(0.46 0.3 296.42);
 }
 
 :root {
@@ -49,7 +66,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.64 0.24 296.42); /* Updated to purple */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -85,7 +102,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.76 0.19 296.42); /* Updated to purple */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -104,7 +121,7 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.64 0.24 296.42); /* Updated to purple */
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -119,4 +136,77 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Add animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.5s ease-in-out;
+}
+
+.animate-zoomIn {
+  animation: zoomIn 0.5s ease-in-out;
+}
+
+/* Hostinger-inspired utility classes */
+.bg-hostinger-gradient {
+  background: linear-gradient(to bottom right, oklch(0.145 0 0), oklch(0.46 0.3 296.42));
+}
+
+.bg-hostinger-glow {
+  position: relative;
+}
+
+.bg-hostinger-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: oklch(0.64 0.24 296.42 / 20%);
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.bg-hostinger-card {
+  background-color: oklch(0.145 0 0 / 40%);
+  backdrop-filter: blur(8px);
+  border: 1px solid oklch(1 0 0 / 10%);
 }

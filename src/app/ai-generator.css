@@ -1,0 +1,55 @@
+.ai-generator-section {
+    background: linear-gradient(135deg, #9333ea 0%, #7e22ce 50%, #6366f1 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: white;
+}
+
+.ai-generator-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    max-width: 36rem;
+    color: white;
+}
+
+.ai-generator-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ai-generator-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.ai-generator-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.ai-generator-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.preset-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    transition: background-color 0.2s;
+}
+
+.preset-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

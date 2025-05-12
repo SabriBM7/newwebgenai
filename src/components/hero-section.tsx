@@ -1,96 +1,141 @@
-import Link from "next/link"
-import Image from "next/image"
-import { cn, getButtonClasses, getTextAlignmentClasses } from "@/lib/utils"
-import type { ButtonType, ButtonStyle, TextAlignment } from "@/types"
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
 
-interface HeroSectionProps {
-    title?: string
-    subtitle?: string
-    description?: string
-    backgroundImage?: string
-    overlayColor?: string
-    textColor?: string
-    fontFamily?: string
-    buttons?: ButtonType[]
-    imageUrl?: string
-    imageAlt?: string
-    buttonStyle?: ButtonStyle
-    textAlignment?: TextAlignment
-    keywords?: string[]
-}
+export default function HeroSection() {
+    const [input, setInput] = useState("")
+    const [isGenerating, setIsGenerating] = useState(false)
+    const router = useRouter()
 
-export default function HeroSection({
-                                        title = "Create Websites with AI",
-                                        subtitle = "Transform your ideas into fully functional websites through a simple conversation",
-                                        description = "No coding required. Just describe what you want, and our AI will build it for you.",
-                                        backgroundImage,
-                                        overlayColor = "rgba(0,0,0,0.5)",
-                                        textColor = "#ffffff",
-                                        fontFamily = "sans-serif",
-                                        buttons,
-                                        imageUrl = "/placeholder.svg?height=600&width=600&text=AI+Website+Generator",
-                                        imageAlt = "Hero Image",
-                                        buttonStyle = "rounded",
-                                        textAlignment = "left",
-                                        keywords = [],
-                                    }: HeroSectionProps) {
-    // Default buttons if none are provided
-    const defaultButtons: ButtonType[] = [
-        { label: "Get Started", link: "/create", type: "primary" },
-        { label: "View Examples", link: "/examples", type: "secondary" },
-    ]
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
 
-    // Use provided buttons or fall back to default buttons
-    const displayButtons = buttons || defaultButtons
+        if (!input.trim() || isGenerating) return
 
-    const textAlignmentClass = getTextAlignmentClasses(textAlignment)
+        setIsGenerating(true)
 
-    const containerStyle = {
-        backgroundImage: backgroundImage ? `url(${backgroundImage})` : "linear-gradient(to bottom, #3b82f6, #1d4ed8)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        color: textColor,
-        fontFamily: fontFamily,
+        try {
+            // Call API to generate website
+            const response = await fetch("/api/generate-ai-website", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: input,
+                }),
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to generate website")
+            }
+
+            const data = await response.json()
+
+            // Store the generated website data in localStorage
+            localStorage.setItem("generatedWebsite", JSON.stringify(data))
+
+            // Redirect to preview page
+            router.push("/preview")
+        } catch (error) {
+            console.error("Error generating website:", error)
+            alert("Sorry, there was an error generating your website. Please try again.")
+        } finally {
+            setIsGenerating(false)
+        }
     }
 
-    const overlayStyle = {
-        backgroundColor: overlayColor,
+    const handlePresetClick = (preset: string) => {
+        setInput(preset)
     }
 
     return (
-        <section className="relative py-20 md:py-32" style={containerStyle} data-keywords={keywords.join(",")}>
-            {backgroundImage && <div className="absolute inset-0 z-0" style={overlayStyle}></div>}
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div className={cn("space-y-6", textAlignmentClass)}>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">{title}</h1>
-                        {subtitle && <h2 className="text-xl md:text-2xl font-medium opacity-90">{subtitle}</h2>}
-                        {description && <p className="text-base md:text-lg opacity-80 max-w-lg">{description}</p>}
-                        {displayButtons && displayButtons.length > 0 && (
-                            <div className="flex flex-wrap gap-4">
-                                {displayButtons.map((button, index) => (
-                                    <Link key={index} href={button.link} className={getButtonClasses(button.type, buttonStyle)}>
-                                        {button.label}
-                                        {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
+        <section className="purple-gradient-bg min-h-[80vh] flex items-center justify-center text-white px-4 py-20">
+            <div className="container mx-auto text-center">
+                <div className="flex justify-center items-center mb-8">
+                    <div className="bg-white/10 p-3 rounded-full mr-3">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-purple-300"
+                        >
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                            <path d="M12 12 8 8"></path>
+                            <path d="M12 8v4"></path>
+                        </svg>
                     </div>
-                    {imageUrl && (
-                        <div className="flex justify-center md:justify-end">
-                            <div className="relative w-full max-w-md h-[300px] md:h-[400px]">
-                                <Image
-                                    src={imageUrl || "/placeholder.svg"}
-                                    alt={imageAlt}
-                                    fill
-                                    style={{ objectFit: "contain" }}
-                                    className="drop-shadow-xl"
-                                />
-                            </div>
-                        </div>
-                    )}
+                    <h1 className="text-2xl font-bold">AI Website Generator</h1>
+                </div>
+
+                <h2 className="text-5xl sm:text-6xl font-bold mb-6">Bring your website idea to life in minutes</h2>
+                <p className="text-xl mb-12 text-purple-100 max-w-3xl mx-auto">
+                    Create and launch a website without writing a single line of code. Just chat with our AI, then publish your
+                    project with one click.
+                </p>
+
+                <div className="max-w-3xl mx-auto">
+                    <div className="input-container mb-6">
+                        <form onSubmit={handleSubmit} className="relative">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="What kind of website do you want to create?"
+                                className="w-full px-6 py-4 rounded-full bg-purple-950/50 border border-purple-700/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-white placeholder-purple-300"
+                            />
+                            <button
+                                type="submit"
+                                disabled={isGenerating || !input.trim()}
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 hover:bg-purple-700 p-3 rounded-full transition-colors disabled:opacity-50"
+                            >
+                                {isGenerating ? (
+                                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                                ) : (
+                                    <ArrowRight className="h-5 w-5" />
+                                )}
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="flex flex-wrap justify-center gap-4 mb-8">
+                        <button
+                            onClick={() => handlePresetClick("Landing Page for a SaaS product")}
+                            className="px-6 py-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 border border-purple-700/30 text-white"
+                        >
+                            Landing Page
+                        </button>
+                        <button
+                            onClick={() => handlePresetClick("E-commerce store for fashion products")}
+                            className="px-6 py-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 border border-purple-700/30 text-white"
+                        >
+                            E-commerce
+                        </button>
+                        <button
+                            onClick={() => handlePresetClick("Portfolio website for a photographer")}
+                            className="px-6 py-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 border border-purple-700/30 text-white"
+                        >
+                            Portfolio
+                        </button>
+                        <button
+                            onClick={() => handlePresetClick("Blog website for a tech company")}
+                            className="px-6 py-2 rounded-full bg-purple-800/50 hover:bg-purple-700/50 border border-purple-700/30 text-white"
+                        >
+                            Blog
+                        </button>
+                    </div>
+
+                    <p className="text-sm text-purple-300">Start for free. No credit card required.</p>
                 </div>
             </div>
         </section>

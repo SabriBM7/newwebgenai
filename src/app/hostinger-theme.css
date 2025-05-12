@@ -1,0 +1,61 @@
+/* Hostinger-inspired theme styles */
+.hostinger-gradient-bg {
+    background: linear-gradient(135deg, oklch(0.45 0.27 296) 0%, oklch(0.55 0.25 270) 100%);
+}
+
+.dark .hostinger-gradient-bg {
+    background: linear-gradient(135deg, oklch(0.35 0.27 296) 0%, oklch(0.45 0.25 270) 100%);
+}
+
+.hostinger-card {
+    border: 1px solid oklch(0.45 0.27 296 / 15%);
+    background-color: oklch(1 0 0);
+    box-shadow: 0 4px 20px oklch(0.45 0.27 296 / 10%);
+}
+
+.dark .hostinger-card {
+    border: 1px solid oklch(0.65 0.27 296 / 20%);
+    background-color: oklch(0.205 0 0);
+    box-shadow: 0 4px 20px oklch(0.65 0.27 296 / 15%);
+}
+
+.hostinger-button {
+    background: linear-gradient(135deg, oklch(0.45 0.27 296) 0%, oklch(0.55 0.25 270) 100%);
+    color: oklch(1 0 0);
+    transition: all 0.3s ease;
+}
+
+.hostinger-button:hover {
+    background: linear-gradient(135deg, oklch(0.4 0.27 296) 0%, oklch(0.5 0.25 270) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px oklch(0.45 0.27 296 / 30%);
+}
+
+.dark .hostinger-button {
+    background: linear-gradient(135deg, oklch(0.65 0.27 296) 0%, oklch(0.75 0.25 270) 100%);
+}
+
+.dark .hostinger-button:hover {
+    background: linear-gradient(135deg, oklch(0.6 0.27 296) 0%, oklch(0.7 0.25 270) 100%);
+    box-shadow: 0 4px 12px oklch(0.65 0.27 296 / 40%);
+}
+
+.hostinger-glow {
+    position: relative;
+}
+
+.hostinger-glow::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    right: -50px;
+    bottom: -50px;
+    background: radial-gradient(circle, oklch(0.45 0.27 296 / 20%) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.dark .hostinger-glow::after {
+    background: radial-gradient(circle, oklch(0.65 0.27 296 / 30%) 0%, transparent 70%);
+}

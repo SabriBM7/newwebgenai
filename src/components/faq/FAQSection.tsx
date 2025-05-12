@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { cn, getTextAlignmentClasses } from "@/lib/utils"
-import type { TextAlignment } from "@/types"
+import type { TextAlignment } from "@/types/index"
 import { ChevronDown, ChevronUp } from "lucide-react"
 
 interface FAQItem {

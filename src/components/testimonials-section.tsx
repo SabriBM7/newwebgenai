@@ -1,121 +1,100 @@
-import Image from "next/image"
-import { cn, getTextAlignmentClasses } from "@/lib/utils"
-import type { TextAlignment } from "@/types/index"
-
-interface Testimonial {
+import { Star } from "lucide-react"
+import Image from 'next/image'
+type TestimonialProps = {
     quote: string
     author: string
     role: string
-    avatarUrl?: string
+    avatarUrl: string
+    rating?: number
 }
 
-interface TestimonialsSectionProps {
-    title?: string
-    subtitle?: string
-    testimonials?: Testimonial[]
-    backgroundColor?: string
-    textColor?: string
-    accentColor?: string
-    textAlignment?: TextAlignment
-    style?: "cards" | "simple" | "quotes"
-    keywords?: string[]
-}
-
-export default function TestimonialsSection({
-                                                title = "What Our Users Say",
-                                                subtitle = "Don't just take our word for it - hear from people who have created websites with our AI",
-                                                testimonials,
-                                                backgroundColor = "#f9fafb",
-                                                textColor = "#000000",
-                                                accentColor = "#3b82f6",
-                                                textAlignment = "center",
-                                                style = "cards",
-                                                keywords = [],
-                                            }: TestimonialsSectionProps) {
-    // Default testimonials if none are provided
-    const defaultTestimonials: Testimonial[] = [
+export default function TestimonialsSection() {
+    const testimonials = [
         {
             quote:
                 "I was able to create a professional website for my business in less than an hour. The AI understood exactly what I needed!",
             author: "Sarah Johnson",
             role: "Small Business Owner",
-            avatarUrl: "/placeholder.svg?height=60&width=60",
+            avatarUrl: "/woman-portrait.png", // Updated to use the actual image
+            rating: 5,
         },
         {
             quote:
                 "As someone with zero technical skills, this platform was a game-changer. My portfolio site looks like it was made by a professional designer.",
             author: "Michael Chen",
             role: "Photographer",
-            avatarUrl: "/placeholder.svg?height=60&width=60",
+            avatarUrl: "/thoughtful-man-portrait.png", // Updated to use the actual image
+            rating: 5,
         },
         {
             quote:
                 "The AI suggested features I hadn't even thought of. My e-commerce site now converts better than my old professionally-built one.",
             author: "Emma Rodriguez",
             role: "Online Store Owner",
-            avatarUrl: "/placeholder.svg?height=60&width=60",
+            avatarUrl: "/woman-portrait-2.png", // Updated to use the actual image
+            rating: 4,
         },
     ]
 
-    // Use provided testimonials or fall back to default testimonials
-    const displayTestimonials = testimonials || defaultTestimonials
-
-    const textAlignmentClass = getTextAlignmentClasses(textAlignment)
-
-    const sectionStyle = {
-        backgroundColor: backgroundColor,
-        color: textColor,
-    }
-
-    const accentStyle = {
-        color: accentColor,
-    }
-
     return (
-        <section className="py-16 md:py-24" style={sectionStyle} data-keywords={keywords.join(",")}>
+        <section className="py-20 bg-gradient-to-b from-black to-purple-950">
             <div className="container mx-auto px-4">
-                <div className={cn("max-w-3xl mx-auto mb-16", textAlignmentClass)}>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-                    {subtitle && <p className="text-lg opacity-80">{subtitle}</p>}
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What Our Users Say</h2>
+                    <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Don't just take our word for it - hear from people who have created websites with our AI
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {displayTestimonials.map((testimonial, index) => (
+                    {testimonials.map((testimonial, index) => (
                         <div
                             key={index}
-                            className={cn(
-                                "p-6",
-                                style === "cards" && "bg-white rounded-lg shadow-md",
-                                style === "simple" && "border-t-2",
-                                style === "quotes" && "relative pl-8",
-                            )}
+                            className="bg-black/40 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300"
                         >
-                            {style === "quotes" && (
-                                <div className="absolute top-0 left-0 text-4xl font-serif" style={accentStyle}>
-                                    "
-                                </div>
-                            )}
-                            <p className="mb-4 italic">{testimonial.quote}</p>
+                            <div className="flex mb-4">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        className={`h-5 w-5 ${i < (testimonial.rating || 5) ? "text-yellow-400 fill-yellow-400" : "text-gray-600"}`}
+                                    />
+                                ))}
+                            </div>
+                            <p className="text-gray-300 mb-6">"{testimonial.quote}"</p>
                             <div className="flex items-center">
-                                {testimonial.avatarUrl && (
-                                    <div className="mr-3">
-                                        <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                                            <Image
-                                                src={testimonial.avatarUrl || "/placeholder.svg"}
-                                                alt={testimonial.author}
-                                                fill
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
+                                {/* Replace the img tag with Next.js Image component */}
+                                <Image
+                                    src={testimonial.avatarUrl || "/placeholder.svg"}
+                                    alt={testimonial.author}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full mr-3 object-cover"
+                                />
                                 <div>
-                                    <p className="font-semibold">{testimonial.author}</p>
-                                    <p className="text-sm opacity-70">{testimonial.role}</p>
+                                    <p className="font-medium text-white">{testimonial.author}</p>
+                                    <p className="text-sm text-gray-400">{testimonial.role}</p>
                                 </div>
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="mt-16 text-center">
+                    <div className="inline-flex items-center bg-black/40 backdrop-blur-sm border border-gray-800 rounded-lg p-2">
+                        <Image
+                            src="/google-logo.png"
+                            alt="Google"
+                            width={60}
+                            height={20}
+                            className="h-6 w-auto"
+                        />
+                        <div className="flex ml-2 mr-3">
+                            {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                            ))}
+                        </div>
+                        <span className="text-white text-sm">4.8/5 · 1,237 reviews</span>
+                    </div>
                 </div>
             </div>
         </section>
