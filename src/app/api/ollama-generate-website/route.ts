@@ -10,6 +10,72 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Website requirements are required" }, { status: 400 })
         }
 
+        // Check if we should use Ollama or return a sample response
+        const useOllama = process.env.USE_OLLAMA === "true"
+
+        if (!useOllama) {
+            // Return a sample response for testing
+            return NextResponse.json({
+                website: {
+                    title: "AI-Powered Marketing Automation",
+                    description: "Grow your audience and increase conversions with our AI tools",
+                    sections: [
+                        {
+                            type: "header",
+                            variant: "minimal",
+                            props: {
+                                logo: "MarketAI",
+                                menu: [
+                                    { label: "Home", link: "#home" },
+                                    { label: "Features", link: "#features" },
+                                    { label: "Pricing", link: "#pricing" },
+                                    { label: "Contact", link: "#contact" },
+                                ],
+                            },
+                        },
+                        {
+                            type: "hero",
+                            variant: "split",
+                            props: {
+                                title: "Transform Your Marketing with AI",
+                                subtitle: "Automate, Optimize, Convert",
+                                description:
+                                    "Our AI-powered marketing tools help small businesses grow their audience and increase conversions without the complexity.",
+                                buttonText: "Get Started Free",
+                                buttonLink: "#signup",
+                                imageUrl: "/placeholder.svg?height=600&width=600&text=Marketing+Automation",
+                            },
+                        },
+                        {
+                            type: "features",
+                            variant: "grid",
+                            props: {
+                                title: "Powerful Features",
+                                subtitle: "Everything you need to succeed",
+                                features: [
+                                    {
+                                        title: "AI Content Generation",
+                                        description: "Create engaging content that converts with our AI writing assistant.",
+                                        icon: "Sparkles",
+                                    },
+                                    {
+                                        title: "Automated Campaigns",
+                                        description: "Set up marketing campaigns that run on autopilot.",
+                                        icon: "Zap",
+                                    },
+                                    {
+                                        title: "Smart Analytics",
+                                        description: "Get actionable insights to improve your marketing performance.",
+                                        icon: "BarChart",
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            })
+        }
+
         // Create a detailed prompt for website generation
         const prompt = `
 You are a professional website designer and developer. Create a detailed website structure based on the following requirements:
@@ -38,7 +104,6 @@ Format your response as a valid JSON object with the following structure:
       "variant": "minimal",
       "props": {
         "logo": "Company Name",
-        "logoUrl": "/placeholder.svg?height=40&width=40&text=Logo",
         "menu": [
           { "label": "Home", "link": "#home" },
           { "label": "Features", "link": "#features" }
@@ -88,8 +153,85 @@ Make sure your response is ONLY the JSON object, with no additional text.
         try {
             // Find JSON in the response
             const jsonMatch = data.response.match(/\{[\s\S]*\}/)
-            const jsonString = jsonMatch ? jsonMatch[0] : data.response
-            const websiteStructure = JSON.parse(jsonString)
+            let jsonString = jsonMatch ? jsonMatch[0] : data.response
+
+            // Try to clean up the JSON string
+            jsonString = jsonString
+                .replace(/\\n/g, " ")
+                .replace(/\\"/g, '"')
+                .replace(/"{/g, "{")
+                .replace(/}"/g, "}")
+                .replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":') // Ensure property names are quoted
+                .replace(/,\s*}/g, "}") // Remove trailing commas
+
+            let websiteStructure
+
+            try {
+                websiteStructure = JSON.parse(jsonString)
+            } catch (parseError) {
+                console.error("Error parsing JSON, trying to fix:", parseError)
+
+                // If parsing fails, return the sample response
+                return NextResponse.json({
+                    website: {
+                        title: "Generated Website",
+                        description: "A website generated with AI",
+                        sections: [
+                            {
+                                type: "header",
+                                variant: "minimal",
+                                props: {
+                                    logo: "Company Name",
+                                    menu: [
+                                        { label: "Home", link: "#home" },
+                                        { label: "Features", link: "#features" },
+                                        { label: "Contact", link: "#contact" },
+                                    ],
+                                },
+                            },
+                            {
+                                type: "hero",
+                                variant: "standard",
+                                props: {
+                                    title: "Welcome to Our Website",
+                                    subtitle: "Your journey starts here",
+                                    description: "We provide the best services for your needs",
+                                    buttonText: "Get Started",
+                                    buttonLink: "#get-started",
+                                    imageUrl: "/placeholder.svg?height=600&width=600&text=Hero+Image",
+                                },
+                            },
+                            {
+                                type: "features",
+                                variant: "grid",
+                                props: {
+                                    title: "Our Features",
+                                    subtitle: "What we offer",
+                                    features: [
+                                        {
+                                            title: "Feature 1",
+                                            description: "Description of feature 1",
+                                            icon: "Star",
+                                        },
+                                        {
+                                            title: "Feature 2",
+                                            description: "Description of feature 2",
+                                            icon: "Heart",
+                                        },
+                                        {
+                                            title: "Feature 3",
+                                            description: "Description of feature 3",
+                                            icon: "Zap",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                    error: "Failed to parse JSON from Ollama response, using fallback",
+                    rawResponse: data.response,
+                })
+            }
 
             // Validate and clean up the structure
             const cleanedStructure = validateAndCleanStructure(websiteStructure)
@@ -99,9 +241,41 @@ Make sure your response is ONLY the JSON object, with no additional text.
             })
         } catch (error) {
             console.error("Error parsing JSON from Ollama response:", error)
+
+            // Return a fallback response
             return NextResponse.json({
+                website: {
+                    title: "Generated Website",
+                    description: "A website generated with AI",
+                    sections: [
+                        {
+                            type: "header",
+                            variant: "minimal",
+                            props: {
+                                logo: "Company Name",
+                                menu: [
+                                    { label: "Home", link: "#home" },
+                                    { label: "Features", link: "#features" },
+                                    { label: "Contact", link: "#contact" },
+                                ],
+                            },
+                        },
+                        {
+                            type: "hero",
+                            variant: "standard",
+                            props: {
+                                title: "Welcome to Our Website",
+                                subtitle: "Your journey starts here",
+                                description: "We provide the best services for your needs",
+                                buttonText: "Get Started",
+                                buttonLink: "#get-started",
+                                imageUrl: "/placeholder.svg?height=600&width=600&text=Hero+Image",
+                            },
+                        },
+                    ],
+                },
+                error: "Failed to parse JSON from Ollama response, using fallback",
                 rawResponse: data.response,
-                error: "Failed to parse website structure from Ollama response",
             })
         }
     } catch (error) {

@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowRight } from "lucide-react"
-import Link from "next/link"
+import Navbar from "@/components/navbar"
 import FeaturesSection from "@/components/features-section"
 import TestimonialsSection from "@/components/testimonials-section"
 import CTASection from "@/components/cta-section"
@@ -60,45 +60,7 @@ export default function Home() {
 
     return (
         <div className="flex min-h-screen flex-col bg-black">
-            {/* Navigation Bar */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-gray-800">
-                <div className="container mx-auto px-4">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center">
-                            <Link href="/" className="flex items-center">
-                <span className="text-2xl font-bold text-white">
-                  WebGen<span className="text-purple-500">AI</span>
-                </span>
-                            </Link>
-
-                            <nav className="hidden md:flex ml-10 space-x-8">
-                                <Link href="/examples" className="text-gray-300 hover:text-white transition-colors">
-                                    Examples
-                                </Link>
-                                <Link href="/features" className="text-gray-300 hover:text-white transition-colors">
-                                    Features
-                                </Link>
-                                <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
-                                    Pricing
-                                </Link>
-                                <Link href="/chat" className="text-gray-300 hover:text-white transition-colors">
-                                    AI Chat
-                                </Link>
-                            </nav>
-                        </div>
-
-                        <div className="hidden md:flex items-center space-x-4">
-                            <Link href="/login">
-                                <button className="text-gray-300 hover:text-white">Log in</button>
-                            </Link>
-                            <Link href="/register">
-                                <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md">Sign up</button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+            <Navbar />
             <main className="flex-grow pt-16">
                 {/* Hero Section with Purple Gradient */}
                 <div className="purple-gradient-bg min-h-[80vh] flex items-center justify-center text-white px-4 py-20">
@@ -187,21 +149,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Features Section */}
-                <div className="bg-black py-20">
-                    <div className="container mx-auto px-4 text-center">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            Everything you need to create amazing websites
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-16">
-                            Our AI-powered platform makes website creation faster and easier than ever before
-                        </p>
-
-                        {/* Rest of the content */}
-                        <FeaturesSection />
-                    </div>
-                </div>
-
+                <FeaturesSection />
                 <TestimonialsSection />
                 <CTASection />
             </main>

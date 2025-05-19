@@ -2,95 +2,111 @@ import { generateEmbedding, storeDocumentChunk } from "./embeddings"
 import { createServerClient } from "./supabase-server"
 
 /**
- * Split text into chunks of roughly equal size
+ * Process a document by chunking it and generating embeddings
  */
-export function splitIntoChunks(text: string, chunkSize = 1000, overlap = 200): string[] {
-    if (!text || text.length <= chunkSize) {
-        return [text]
-    }
+export async function processDocument(text: string, metadata: any): Promise<{ ids: number[]; chunkCount: number }> {
+    try {
+        // Create chunks from the text
+        const chunks = chunkText(text, 1000, 200)
+        const chunkCount = chunks.length
 
-    const chunks: string[] = []
-    let startIndex = 0
+        // Store document in Supabase
+        const supabase = createServerClient()
+        const { data: document, error } = await supabase
+            .from("documents")
+            .insert({
+                title: metadata.title || "Untitled Document",
+                description: metadata.description || "",
+                file_path: metadata.filePath || "",
+                file_type: metadata.fileType || "text/plain",
+                user_id: metadata.userId || null,
+            })
+            .select("id")
+            .single()
 
-    while (startIndex < text.length) {
-        // Find a good breaking point near the chunk size
-        let endIndex = Math.min(startIndex + chunkSize, text.length)
-
-        // If we're not at the end of the text, try to find a natural break point
-        if (endIndex < text.length) {
-            // Look for paragraph breaks, then sentence breaks, then word breaks
-            const paragraphBreak = text.lastIndexOf("\n\n", endIndex)
-            const sentenceBreak = text.lastIndexOf(". ", endIndex)
-            const wordBreak = text.lastIndexOf(" ", endIndex)
-
-            if (paragraphBreak > startIndex && paragraphBreak > endIndex - 200) {
-                endIndex = paragraphBreak + 2 // Include the paragraph break
-            } else if (sentenceBreak > startIndex && sentenceBreak > endIndex - 100) {
-                endIndex = sentenceBreak + 2 // Include the period and space
-            } else if (wordBreak > startIndex) {
-                endIndex = wordBreak + 1 // Include the space
-            }
+        if (error) {
+            console.error("Error storing document:", error)
+            throw new Error("Failed to store document")
         }
 
-        chunks.push(text.substring(startIndex, endIndex).trim())
-        startIndex = endIndex - overlap // Create overlap between chunks
-    }
+        // Add document ID to metadata
+        metadata.documentId = document.id
 
-    return chunks
+        // Process each chunk
+        const ids: number[] = []
+
+        for (let i = 0; i < chunks.length; i++) {
+            const chunk = chunks[i]
+
+            // Generate embedding for the chunk
+            const embedding = await generateEmbedding(chunk)
+
+            // Store chunk with embedding
+            const chunkMetadata = {
+                ...metadata,
+                chunkIndex: i,
+                totalChunks: chunks.length,
+            }
+
+            const id = await storeDocumentChunk(chunk, chunkMetadata, embedding)
+            ids.push(id)
+        }
+
+        return { ids, chunkCount }
+    } catch (error) {
+        console.error("Error processing document:", error)
+        throw new Error("Failed to process document")
+    }
 }
 
 /**
- * Process a document by splitting it into chunks, generating embeddings, and storing in Supabase
+ * Split text into chunks with overlap
  */
-export async function processDocument(content: string, metadata: any): Promise<{ ids: number[]; chunkCount: number }> {
-    // Split the document into chunks
-    const chunks = splitIntoChunks(content)
+function chunkText(text: string, chunkSize: number, overlap: number): string[] {
+    const chunks: string[] = []
 
-    // Store the document in the documents table
-    const supabase = createServerClient()
-    const { data: documentData, error: documentError } = await supabase
-        .from("documents")
-        .insert({
-            title: metadata.title || "Untitled Document",
-            description: metadata.description,
-            file_path: metadata.filePath,
-            file_type: metadata.fileType,
-            user_id: metadata.userId,
-        })
-        .select("id")
-        .single()
+    // Clean and normalize text
+    const cleanedText = text.replace(/\s+/g, " ").trim()
 
-    if (documentError) {
-        console.error("Error storing document:", documentError)
-        throw new Error("Failed to store document")
+    // If text is shorter than chunk size, return it as a single chunk
+    if (cleanedText.length <= chunkSize) {
+        return [cleanedText]
     }
 
-    // Add document ID to metadata
-    metadata.documentId = documentData.id
+    // Split text into chunks with overlap
+    let startIndex = 0
 
-    // Process each chunk
-    const chunkIds: number[] = []
+    while (startIndex < cleanedText.length) {
+        // Get chunk of text
+        let endIndex = startIndex + chunkSize
+        let chunk = cleanedText.substring(startIndex, endIndex)
 
-    for (let i = 0; i < chunks.length; i++) {
-        const chunk = chunks[i]
+        // If we're not at the end of the text, try to break at a sentence or paragraph
+        if (endIndex < cleanedText.length) {
+            // Look for a good breaking point (period, question mark, exclamation point, newline)
+            const breakPoints = [". ", "? ", "! ", "\n"]
+            let breakIndex = -1
 
-        // Add chunk metadata
-        const chunkMetadata = {
-            ...metadata,
-            chunkIndex: i,
-            totalChunks: chunks.length,
+            for (const breakPoint of breakPoints) {
+                const lastIndex = chunk.lastIndexOf(breakPoint)
+                if (lastIndex > breakIndex) {
+                    breakIndex = lastIndex + breakPoint.length
+                }
+            }
+
+            // If we found a good breaking point, use it
+            if (breakIndex > 0) {
+                chunk = chunk.substring(0, breakIndex)
+                endIndex = startIndex + breakIndex
+            }
         }
 
-        // Generate embedding for the chunk
-        const embedding = await generateEmbedding(chunk)
+        // Add chunk to list
+        chunks.push(chunk)
 
-        // Store the chunk with its embedding
-        const chunkId = await storeDocumentChunk(chunk, chunkMetadata, embedding)
-        chunkIds.push(chunkId)
+        // Move start index for next chunk, accounting for overlap
+        startIndex = endIndex - overlap
     }
 
-    return {
-        ids: chunkIds,
-        chunkCount: chunks.length,
-    }
+    return chunks
 }

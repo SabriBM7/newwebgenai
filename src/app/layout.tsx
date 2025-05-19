@@ -2,6 +2,7 @@ import type React from "react"
 import "./globals.css"
 import "./animations.css"
 import "./purple-gradient.css"
+import "./ai-generator.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 

@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils"
-import { Check, ArrowRight } from "lucide-react"
-import type { TextAlignment } from "@/types/index"
+"use client"
+
+import type { LucideIcon } from "lucide-react"
+import * as LucideIcons from "lucide-react"
 
 interface Feature {
     title: string
@@ -10,123 +11,76 @@ interface Feature {
 }
 
 interface GridFeaturesProps {
-    title?: string
+    title: string
     subtitle?: string
-    description?: string
-    items?: Feature[]
+    features: Feature[]
     columns?: 2 | 3 | 4
-    withBackground?: boolean
-    withBorder?: boolean
-    textAlignment?: TextAlignment
-    className?: string
+    backgroundColor?: string
+    textColor?: string
+    iconColor?: string
+    alignment?: "left" | "center"
     keywords?: string[]
 }
 
 export default function GridFeatures({
-                                         title = "Features",
-                                         subtitle = "What we offer",
-                                         description,
-                                         items = [],
+                                         title,
+                                         subtitle,
+                                         features,
                                          columns = 3,
-                                         withBackground = false,
-                                         withBorder = true,
-                                         textAlignment = "center",
-                                         className,
+                                         backgroundColor = "#ffffff",
+                                         textColor = "#000000",
+                                         iconColor = "#3b82f6",
+                                         alignment = "center",
                                          keywords = [],
                                      }: GridFeaturesProps) {
-    // Ensure items is an array, even if it's undefined
-    const features = Array.isArray(items) ? items : []
-
-    // Default features if none provided
-    if (features.length === 0) {
-        features.push(
-            {
-                title: "Feature 1",
-                description: "Description of feature 1",
-                icon: "check",
-            },
-            {
-                title: "Feature 2",
-                description: "Description of feature 2",
-                icon: "check",
-            },
-            {
-                title: "Feature 3",
-                description: "Description of feature 3",
-                icon: "check",
-            },
-        )
+    const containerStyle = {
+        backgroundColor,
+        color: textColor,
     }
 
-    const getIconComponent = (iconName = "check") => {
-        switch (iconName.toLowerCase()) {
-            case "check":
-                return <Check className="h-6 w-6" />
-            case "arrow":
-            case "arrowright":
-                return <ArrowRight className="h-6 w-6" />
-            default:
-                return <Check className="h-6 w-6" />
-        }
+    const getIcon = (iconName: string): LucideIcon => {
+        // @ts-ignore - Dynamic icon import
+        return LucideIcons[iconName] || LucideIcons.Sparkles
     }
 
-    const getColumnsClass = () => {
-        switch (columns) {
-            case 2:
-                return "grid-cols-1 md:grid-cols-2"
-            case 3:
-                return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            case 4:
-                return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
-            default:
-                return "grid-cols-1 md:grid-cols-3"
-        }
+    const gridCols = {
+        2: "md:grid-cols-2",
+        3: "md:grid-cols-2 lg:grid-cols-3",
+        4: "md:grid-cols-2 lg:grid-cols-4",
     }
 
-    const getTextAlignmentClass = () => {
-        switch (textAlignment) {
-            case "left":
-                return "text-left"
-            case "center":
-                return "text-center"
-            case "right":
-                return "text-right"
-            default:
-                return "text-center"
-        }
+    const alignmentClasses = {
+        left: "text-left",
+        center: "text-center",
     }
 
     return (
-        <section
-            className={cn("py-16", withBackground ? "bg-gray-50 dark:bg-gray-900" : "", className)}
-            data-keywords={keywords.join(",")}
-        >
+        <section className="py-16 md:py-24" style={containerStyle} data-keywords={keywords.join(",")}>
             <div className="container mx-auto px-4">
-                <div className={cn("max-w-3xl mx-auto mb-12", getTextAlignmentClass())}>
-                    {subtitle && <p className="text-blue-600 dark:text-blue-400 font-medium mb-2">{subtitle}</p>}
-                    {title && <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>}
-                    {description && <p className="text-gray-600 dark:text-gray-400 text-lg">{description}</p>}
+                <div className={`max-w-3xl mx-auto mb-16 ${alignmentClasses[alignment]}`}>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+                    {subtitle && <p className="text-lg opacity-80">{subtitle}</p>}
                 </div>
 
-                <div className={cn("grid gap-8", getColumnsClass())}>
-                    {features.map((feature, index) => (
-                        <div
-                            key={index}
-                            className={cn(
-                                "p-6",
-                                withBorder ? "border border-gray-200 dark:border-gray-800 rounded-lg" : "",
-                                withBackground ? "bg-white dark:bg-gray-800" : "",
-                            )}
-                        >
-                            <div className="mb-4">
-                                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
-                                    {getIconComponent(feature.icon)}
-                                </div>
+                <div className={`grid grid-cols-1 ${gridCols[columns]} gap-8`}>
+                    {features.map((feature, index) => {
+                        const Icon = feature.icon ? getIcon(feature.icon) : null
+
+                        return (
+                            <div
+                                key={index}
+                                className={`p-6 rounded-lg border border-gray-200 hover:shadow-md transition-shadow ${alignmentClasses[alignment]}`}
+                            >
+                                {Icon && (
+                                    <div className="mb-4">
+                                        <Icon size={32} color={feature.iconColor || iconColor} />
+                                    </div>
+                                )}
+                                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                                <p className="opacity-80">{feature.description}</p>
                             </div>
-                            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                            <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
         </section>

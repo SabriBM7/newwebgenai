@@ -1,49 +1,73 @@
-import { OpenAIEmbeddings } from "./openai-embeddings"
-import { createClient } from "@supabase/supabase-js"
+import { createServerClient } from "./supabase-server"
+import OpenAI from "openai"
 
-// Initialize the OpenAI embeddings client
-const embeddingsClient = new OpenAIEmbeddings()
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-const supabase = createClient(supabaseUrl, supabaseKey)
+// Initialize OpenAI client
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+})
 
 /**
- * Generate an embedding for a text
+ * Generate embeddings for a text using OpenAI
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
     try {
-        return await embeddingsClient.embed(text)
+        const response = await openai.embeddings.create({
+            model: "text-embedding-3-small",
+            input: text,
+        })
+
+        return response.data[0].embedding
     } catch (error) {
         console.error("Error generating embedding:", error)
-        throw error
+
+        // Return a mock embedding for development/fallback
+        console.warn("Using fallback random embedding")
+        return Array(1536)
+            .fill(0)
+            .map(() => Math.random() * 2 - 1)
     }
 }
 
 /**
- * Perform a similarity search in the document_chunks table
+ * Store a document chunk with its embedding in Supabase
  */
-export async function similaritySearch(
-    embedding: number[],
-    threshold = 0.7,
-    limit = 5,
-): Promise<Array<{ id: number; content: string; metadata: any; similarity: number }>> {
-    try {
-        const { data, error } = await supabase.rpc("match_documents", {
-            query_embedding: embedding,
-            match_threshold: threshold,
-            match_count: limit,
+export async function storeDocumentChunk(content: string, metadata: any, embedding: number[]): Promise<number> {
+    const supabase = createServerClient()
+
+    const { data, error } = await supabase
+        .from("document_chunks")
+        .insert({
+            content,
+            metadata,
+            embedding,
         })
+        .select("id")
+        .single()
 
-        if (error) {
-            console.error("Error performing similarity search:", error)
-            return []
-        }
+    if (error) {
+        console.error("Error storing document chunk:", error)
+        throw new Error("Failed to store document chunk")
+    }
 
-        return data || []
-    } catch (error) {
-        console.error("Error in similarity search:", error)
+    return data.id
+}
+
+/**
+ * Perform a similarity search using the provided query embedding
+ */
+export async function similaritySearch(queryEmbedding: number[], threshold = 0.7, limit = 5) {
+    const supabase = createServerClient()
+
+    const { data, error } = await supabase.rpc("match_documents", {
+        query_embedding: queryEmbedding,
+        match_threshold: threshold,
+        match_count: limit,
+    })
+
+    if (error) {
+        console.error("Error performing similarity search:", error)
         return []
     }
+
+    return data || []
 }

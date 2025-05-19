@@ -1,5 +1,5 @@
 import { Star } from "lucide-react"
-import Image from 'next/image'
+
 type TestimonialProps = {
     quote: string
     author: string
@@ -15,7 +15,7 @@ export default function TestimonialsSection() {
                 "I was able to create a professional website for my business in less than an hour. The AI understood exactly what I needed!",
             author: "Sarah Johnson",
             role: "Small Business Owner",
-            avatarUrl: "/woman-portrait.png", // Updated to use the actual image
+            avatarUrl: "/placeholder.svg?height=100&width=100&text=SJ",
             rating: 5,
         },
         {
@@ -23,7 +23,7 @@ export default function TestimonialsSection() {
                 "As someone with zero technical skills, this platform was a game-changer. My portfolio site looks like it was made by a professional designer.",
             author: "Michael Chen",
             role: "Photographer",
-            avatarUrl: "/thoughtful-man-portrait.png", // Updated to use the actual image
+            avatarUrl: "/placeholder.svg?height=100&width=100&text=MC",
             rating: 5,
         },
         {
@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
                 "The AI suggested features I hadn't even thought of. My e-commerce site now converts better than my old professionally-built one.",
             author: "Emma Rodriguez",
             role: "Online Store Owner",
-            avatarUrl: "/woman-portrait-2.png", // Updated to use the actual image
+            avatarUrl: "/placeholder.svg?height=100&width=100&text=ER",
             rating: 4,
         },
     ]
@@ -62,13 +62,10 @@ export default function TestimonialsSection() {
                             </div>
                             <p className="text-gray-300 mb-6">"{testimonial.quote}"</p>
                             <div className="flex items-center">
-                                {/* Replace the img tag with Next.js Image component */}
-                                <Image
+                                <img
                                     src={testimonial.avatarUrl || "/placeholder.svg"}
                                     alt={testimonial.author}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full mr-3 object-cover"
+                                    className="w-10 h-10 rounded-full mr-3"
                                 />
                                 <div>
                                     <p className="font-medium text-white">{testimonial.author}</p>
@@ -81,13 +78,6 @@ export default function TestimonialsSection() {
 
                 <div className="mt-16 text-center">
                     <div className="inline-flex items-center bg-black/40 backdrop-blur-sm border border-gray-800 rounded-lg p-2">
-                        <Image
-                            src="/google-logo.png"
-                            alt="Google"
-                            width={60}
-                            height={20}
-                            className="h-6 w-auto"
-                        />
                         <div className="flex ml-2 mr-3">
                             {[...Array(5)].map((_, i) => (
                                 <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />

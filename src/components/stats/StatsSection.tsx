@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useEffect, useRef, useState } from "react"
 import { cn, getTextAlignmentClasses } from "@/lib/utils"
-import type { TextAlignment } from "@/types"
+import type { TextAlignment } from "@/types/index"
 
 interface StatItem {
     value: number
