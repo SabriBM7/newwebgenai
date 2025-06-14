@@ -40,3 +40,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 myproject.zip
+
+# Ignore all large assets
+*.psd
+*.mp4
+*.mov
+*.zip
+*.png
+*.jpg
+# optionally exclude only certain folders
+/public/examples/*

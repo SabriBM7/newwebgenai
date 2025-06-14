@@ -2,49 +2,44 @@
 
 import { Component, type ErrorInfo, type ReactNode } from "react"
 
-interface ErrorBoundaryProps {
-    children: ReactNode
-    fallback?: ReactNode | ((error: Error) => ReactNode)
-    onError?: (error: Error, errorInfo: ErrorInfo) => void
+interface Props {
+    children?: ReactNode
+    fallback?: ReactNode
 }
 
-interface ErrorBoundaryState {
+interface State {
     hasError: boolean
     error: Error | null
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    constructor(props: ErrorBoundaryProps) {
-        super(props)
-        this.state = { hasError: false, error: null }
+export class ErrorBoundary extends Component<Props, State> {
+    public state: State = {
+        hasError: false,
+        error: null,
     }
 
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    public static getDerivedStateFromError(error: Error): State {
+        // Update state so the next render will show the fallback UI.
         return { hasError: true, error }
     }
 
-    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        console.error("Error caught by ErrorBoundary:", error, errorInfo)
-        if (this.props.onError) {
-            this.props.onError(error, errorInfo)
-        }
+    public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        console.error("Uncaught error:", error, errorInfo)
     }
 
-    render(): ReactNode {
+    public render() {
         if (this.state.hasError) {
-            if (typeof this.props.fallback === "function" && this.state.error) {
-                return this.props.fallback(this.state.error)
-            }
-
-            if (this.props.fallback) {
-                return this.props.fallback
-            }
-
+            // You can render any custom fallback UI
             return (
-                <div className="p-4 border border-red-300 bg-red-50 text-red-800 rounded">
-                    <h3 className="font-bold">Something went wrong</h3>
-                    {this.state.error && <pre className="mt-2 text-xs whitespace-pre-wrap">{this.state.error.message}</pre>}
-                </div>
+                this.props.fallback || (
+                    <div className="p-4 border border-red-300 bg-red-50 rounded-md">
+                        <h2 className="text-lg font-semibold text-red-800 mb-2">Something went wrong</h2>
+                        <details className="text-sm text-red-700">
+                            <summary className="cursor-pointer">Error details</summary>
+                            <pre className="mt-2 p-2 bg-red-100 rounded overflow-auto text-xs">{this.state.error?.toString()}</pre>
+                        </details>
+                    </div>
+                )
             )
         }
 

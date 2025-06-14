@@ -1,0 +1,8 @@
+export { default as TechPortfolio } from "./TechPortfolio"
+export { default as TechProcess } from "./TechProcess"
+export { default as TechServices } from "./TechServices"
+export { default as TechTeam } from "./TechTeam"
+export { default as TechFeatures } from "./TechFeatures"
+export { default as TechTestimonials } from "./TechTestimonials"
+export { default as TechStats } from "./TechStats"
+export { default as TechPricing } from "./TechPricing"

@@ -23,6 +23,6 @@ export function SafeFragment({
         )
     }
 
-    // Otherwise, just render the children
+    // Otherwise, just render the children without any wrapper
     return <>{children}</>
 }

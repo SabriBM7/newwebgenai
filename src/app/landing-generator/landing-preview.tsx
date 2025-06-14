@@ -5,30 +5,30 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
 // Header imports
-import MinimalHeader from "@/components/headers/minimal-header"
-import SaaSHeader from "@/components/headers/saas-header"
-import EducationHeader from "@/components/headers/education-header"
-import CorporateHeader from "@/components/headers/CorporateHeader"
+import MinimalHeader from "@/components/system/headers/minimal-header"
+import SaaSHeader from "@/components/system/headers/saas-header"
+import EducationHeader from "@/components/system/headers/education-header"
+import CorporateHeader from "@/components/system/headers/CorporateHeader"
 
 // Hero imports
-import StandardHero from "@/components/heroes/StandardHero"
-import SplitHero from "@/components/heroes/SplitHero"
-import GradientHero from "@/components/heroes/GradientHero"
-import VideoBackgroundHero from "@/components/heroes/VideoBackgroundHero"
-import ParallaxHero from "@/components/heroes/ParallaxHero"
+import MinimalistHero from "@/components/system/heroes/MinimalistHero"
+import SplitHero from "@/components/system/heroes/SplitHero"
+import GradientHero from "@/components/system/heroes/GradientHero"
+import VideoBackgroundHero from "@/components/system/heroes/VideoBackgroundHero"
+import ParallaxHero from "@/components/system/heroes/ParallaxHero"
 
 // Features imports
-import GridFeatures from "@/components/features/GridFeatures"
-import CardFeatures from "@/components/features/CardFeatures"
-import AnimatedFeatures from "@/components/features/AnimatedFeatures"
-import TimelineFeatures from "@/components/features/TimelineFeatures"
+import GridFeatures from "@/components/system/features/GridFeatures"
+import CardFeatures from "@/components/system/features/CardFeatures"
+import AnimatedFeatures from "@/components/system/features/AnimatedFeatures"
+import TimelineFeatures from "@/components/system/features/TimelineFeatures"
 
 // Footer imports
-import ModernFooter from "@/components/footers/ModernFooter"
-import CreativeFooter from "@/components/footers/CreativeFooter"
+import ModernFooter from "@/components/system/footers/ModernFooter"
+import CreativeFooter from "@/components/system/footers/CreativeFooter"
 
 // Theme imports
-import { ThemeCustomizer } from "@/components/theme/ThemeCustomizer"
+import { ThemeCustomizer } from "@/components/system/theme/ThemeCustomizer"
 import { type Theme, getThemeById } from "@/lib/theme-customization"
 
 // Define the content structure
@@ -177,7 +177,7 @@ export default function LandingPreview({ content }: LandingPreviewProps) {
                 )
             default:
                 return (
-                    <StandardHero
+                    <MinimalistHero
                         title={content.hero.title}
                         subtitle={content.hero.subtitle}
                         description={content.hero.description}

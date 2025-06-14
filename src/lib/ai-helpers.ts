@@ -1,86 +1,73 @@
-import type { WebsiteGenerationPrompt } from "./ai-service"
+// src/lib/ai-helpers.ts
 
-type Message = {
-    role: "user" | "assistant"
-    content: string
-}
+import { generateText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { Ollama } from "ollama"; // Import from the correct 'ollama' package
 
-type RequirementsResult = {
-    readyToGenerate: boolean
-    industry?: string
-    purpose?: string
-    targetAudience?: string
-    style?: string
-    features?: string[]
-    tone?: string
-    additionalInfo?: string
-}
+// Instantiate the AI providers
+const openai = createOpenAI({});
+const ollama = new Ollama({
+    // Assumes Ollama is running on http://localhost:11434
+    // You can configure host if it's different, e.g., host: 'http://192.168.1.100:11434'
+});
 
 /**
- * Extracts website requirements from chat messages
+ * A centralized function to call our AI models.
+ * It now uses the official `ollama` package for local models.
  */
-export function extractWebsiteRequirements(messages: Message[]): RequirementsResult {
-    // Default result
-    const result: RequirementsResult = {
-        readyToGenerate: false,
+export async function callAI(prompt: string, provider: string = "enhanced"): Promise<string> {
+    try {
+        console.log(`   - Calling AI Provider: ${provider}...`);
+
+        if (provider === "openai") {
+            // --- OpenAI Path ---
+            const { text } = await generateText({
+                model: openai("gpt-4o-mini"),
+                prompt: prompt,
+                temperature: 0.7,
+                maxTokens: 4096,
+            });
+            return extractJson(text);
+
+        } else {
+            // --- Ollama Path (for 'enhanced', 'ollama', 'wizardlm', etc.) ---
+            let modelName;
+            switch (provider) {
+                case "wizardlm":
+                    modelName = "wizardlm2";
+                    break;
+                case "enhanced":
+                case "ollama":
+                default:
+                    modelName = "llama3"; // Default to llama3 for local generation
+                    break;
+            }
+
+            console.log(`   - Using Ollama model: ${modelName}`);
+
+            const response = await ollama.generate({
+                model: modelName,
+                prompt: prompt,
+                stream: false, // We want the full response, not a stream
+                format: "json", // Instruct Ollama to output valid JSON
+            });
+
+            return response.response;
+        }
+
+    } catch (error) {
+        console.error(`❌ AI Call Failed for provider ${provider}:`, error);
+        throw new Error(`AI provider ${provider} failed.`);
     }
-
-    // Combine all user messages into one text for analysis
-    const userText = messages
-        .filter((msg) => msg.role === "user")
-        .map((msg) => msg.content)
-        .join(" ")
-
-    // Extract industry (simple approach - in production you'd use more robust NLP)
-    const industryMatch = userText.match(/industry[:\s]+([^,.]+)/i)
-    if (industryMatch) result.industry = industryMatch[1].trim()
-
-    // Extract purpose
-    const purposeMatch = userText.match(/purpose[:\s]+([^,.]+)/i)
-    if (purposeMatch) result.purpose = purposeMatch[1].trim()
-
-    // Extract target audience
-    const audienceMatch = userText.match(/audience[:\s]+([^,.]+)/i)
-    if (audienceMatch) result.targetAudience = audienceMatch[1].trim()
-
-    // Extract style
-    const styleMatch = userText.match(/style[:\s]+([^,.]+)/i)
-    if (styleMatch) result.style = styleMatch[1].trim()
-
-    // Extract features (very simple approach)
-    const featuresMatch = userText.match(/features[:\s]+([^,.]+)/i)
-    if (featuresMatch) {
-        result.features = featuresMatch[1]
-            .split(/[,&]/)
-            .map((f) => f.trim())
-            .filter((f) => f.length > 0)
-    }
-
-    // Extract tone
-    const toneMatch = userText.match(/tone[:\s]+([^,.]+)/i)
-    if (toneMatch) result.tone = toneMatch[1].trim()
-
-    // Check if we have enough information to generate
-    result.readyToGenerate = !!(
-        result.industry &&
-        result.purpose &&
-        (result.targetAudience || result.style || result.features)
-    )
-
-    return result
 }
 
-/**
- * Converts extracted requirements to a WebsiteGenerationPrompt
- */
-export function createGenerationPrompt(requirements: RequirementsResult): WebsiteGenerationPrompt {
-    return {
-        industry: requirements.industry || "general",
-        purpose: requirements.purpose || "informational",
-        targetAudience: requirements.targetAudience || "general audience",
-        style: requirements.style || "modern and professional",
-        features: requirements.features || ["about", "contact"],
-        tone: requirements.tone || "professional",
-        additionalInfo: requirements.additionalInfo,
+// Helper function to extract JSON from a string that might be wrapped in markdown
+function extractJson(text: string): string {
+    const jsonMatch = text.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+    if (jsonMatch) {
+        return jsonMatch[0];
     }
+    // If no JSON object/array is found, we assume the AI might have returned a raw string,
+    // which could be the case for non-JSON-formatted prompts. We'll return it as is.
+    return text;
 }

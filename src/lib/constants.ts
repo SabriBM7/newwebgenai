@@ -1,5 +1,19 @@
 // lib/constants.ts
 
+export const COMPONENT_TYPES = {
+    HEADER: "header",
+    HERO: "hero",
+    FEATURES: "features",
+    TESTIMONIALS: "testimonials",
+    PRICING: "pricing",
+    CTA: "cta",
+    FAQ: "faq",
+    STATS: "stats",
+    TEAM: "team",
+    NEWSLETTER: "newsletter",
+    FOOTER: "footer",
+} as const
+
 export const ICON_NAMES = {
     star: "Star",
     check: "CheckCircle",

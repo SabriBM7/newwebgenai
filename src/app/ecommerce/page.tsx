@@ -1,4 +1,4 @@
-import EcommerceHeader from "@/components/headers/ecommerce-header"
+import EcommerceHeader from "@/components/system/headers/ecommerce-header"
 import HeroSection from "@/components/hero-section"
 import FeaturesSection from "@/components/features-section"
 import TestimonialsSection from "@/components/testimonials-section"

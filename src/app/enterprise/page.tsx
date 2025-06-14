@@ -1,4 +1,4 @@
-import CorporateHeader from "@/components/headers/corporate-header"
+import CorporateHeader from "@/components/system/headers/corporate-header"
 import HeroSection from "@/components/hero-section"
 import FeaturesSection from "@/components/features-section"
 import TestimonialsSection from "@/components/testimonials-section"

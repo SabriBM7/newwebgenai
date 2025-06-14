@@ -1,4 +1,4 @@
-import EducationHeader from "@/components/headers/education-header"
+import EducationHeader from "@/components/system/headers/education-header"
 import HeroSection from "@/components/hero-section"
 import FeaturesSection from "@/components/features-section"
 import TestimonialsSection from "@/components/testimonials-section"
