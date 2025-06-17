@@ -1,0 +1,1920 @@
+{
+  "components": [
+    {
+      "template_name": "AboutSection",
+      "description": "An informative about section featuring company mission, vision, stats, and values with optional imagery.",
+      "component_name": "AboutSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "image": "string",
+        "stats": "Array<{ number: string; label: string; icon?: string }>",
+        "features": "Array<{ title: string; description: string; icon?: string }>",
+        "mission": "string",
+        "vision": "string"
+      },
+      "defaultProps": {
+        "title": "About Our Company",
+        "subtitle": "Building the future together",
+        "description": "We are a forward-thinking company dedicated to delivering exceptional solutions that drive innovation and create lasting value for our clients and communities."
+      },
+      "subsections": [
+        "Header Title/Subtitles",
+        "Image or Fallback",
+        "Mission and Vision",
+        "Stats Cards",
+        "Features Cards"
+      ],
+      "dependencies": [
+        "Card, CardContent from UI",
+        "Button",
+        "Icons from lucide-react"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/about/AboutSection.tsx",
+      "category": "about",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "CTASection",
+      "description": "A call-to-action section with primary/secondary buttons, trust indicators, and optional background styles.",
+      "component_name": "CTASection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryButtonText": "string",
+        "secondaryButtonText": "string",
+        "primaryButtonLink": "string",
+        "secondaryButtonLink": "string",
+        "backgroundImage": "string",
+        "variant": "'default' | 'gradient' | 'image' | 'minimal'",
+        "showStats": "boolean",
+        "stats": "Array<{ number: string; label: string }>"
+      },
+      "defaultProps": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Join thousands of satisfied customers",
+        "description": "Take the next step towards achieving your goals. Our team is ready to help you succeed.",
+        "primaryButtonText": "Get Started Today",
+        "secondaryButtonText": "Learn More",
+        "primaryButtonLink": "#",
+        "secondaryButtonLink": "#",
+        "variant": "default",
+        "showStats": true
+      },
+      "subsections": [
+        "Header and Description",
+        "Primary and Secondary Buttons",
+        "Stats display",
+        "Trust indicators"
+      ],
+      "dependencies": [
+        "Button",
+        "Lucide Icons (Star, Users, Award)"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/cta/CTASection.tsx",
+      "category": "cta",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "EventsSection",
+      "description": "An interactive events listing section supporting grid, list, and calendar views with dynamic filters. Includes category tabs, calendar dialog, and modals for detailed event information.",
+      "component_name": "EventsSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "events": "Array<{ id: string; title: string; description: string; date: string; time?: string; location?: string; category?: string; imageUrl?: string; registrationUrl?: string; isFeatured?: boolean }>",
+        "categories": "string[]",
+        "layout": "'grid' | 'list' | 'calendar'",
+        "showFilters": "boolean",
+        "theme": "{ primaryColor?: string; secondaryColor?: string; backgroundColor?: string; textColor?: string }"
+      },
+      "defaultProps": {
+        "title": "Upcoming Events",
+        "subtitle": "Join Us",
+        "description": "Check out our upcoming events and register to attend.",
+        "layout": "grid",
+        "showFilters": true
+      },
+      "subsections": [
+        "Section Header (Title, Subtitle, Description)",
+        "Tabs for Category Filtering",
+        "Date Picker via Dialog",
+        "Grid / List / Calendar view of events",
+        "Event Details in Dialog Modal",
+        "Event Card with image, location, category, CTA"
+      ],
+      "dependencies": [
+        "Tabs, TabsList, TabsTrigger",
+        "Dialog, DialogTrigger, DialogContent",
+        "Button",
+        "Calendar (custom component)",
+        "cn() utility from @/lib/utils",
+        "SVG icons inline"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI",
+        "Custom Dialog & Calendar Components"
+      ],
+      "filepath": "system/events/EventsSection.tsx",
+      "category": "events",
+      "industries": [
+        "restaurant",
+        "education",
+        "entertainment",
+        "fitness"
+      ]
+    },
+    {
+      "template_name": "MenuSection",
+      "description": "Restaurant menu with categories, items, prices, and descriptions. Supports filtering and search.",
+      "component_name": "MenuSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "categories": "Array<{ name: string; items: Array<{ name: string; description: string; price: string; image?: string; dietary?: string[] }> }>",
+        "showSearch": "boolean",
+        "showFilters": "boolean"
+      },
+      "defaultProps": {
+        "title": "Our Menu",
+        "subtitle": "Delicious dishes made with fresh ingredients",
+        "showSearch": true,
+        "showFilters": true
+      },
+      "subsections": [
+        "Menu Header",
+        "Category Tabs",
+        "Search and Filters",
+        "Menu Items Grid",
+        "Item Details Modal"
+      ],
+      "dependencies": [
+        "Tabs, TabsList, TabsTrigger",
+        "Input",
+        "Button",
+        "Badge",
+        "Dialog"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/industry/restaurant/MenuSection.tsx",
+      "category": "menu",
+      "industries": [
+        "restaurant",
+        "cafe",
+        "catering"
+      ]
+    },
+    {
+      "template_name": "PropertyListingSection",
+      "description": "Real estate property listings with search, filters, and detailed property cards.",
+      "component_name": "PropertyListingSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "properties": "Array<{ id: string; title: string; price: string; location: string; bedrooms: number; bathrooms: number; sqft: number; images: string[]; features: string[]; type: string }>",
+        "showSearch": "boolean",
+        "showFilters": "boolean",
+        "viewMode": "'grid' | 'list' | 'map'"
+      },
+      "defaultProps": {
+        "title": "Featured Properties",
+        "subtitle": "Find your dream home",
+        "showSearch": true,
+        "showFilters": true,
+        "viewMode": "grid"
+      },
+      "subsections": [
+        "Search and Filter Bar",
+        "View Mode Toggle",
+        "Property Cards Grid/List",
+        "Property Details Modal",
+        "Contact Agent CTA"
+      ],
+      "dependencies": [
+        "Input",
+        "Select",
+        "Button",
+        "Card",
+        "Badge",
+        "Dialog"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/industry/realestate/PropertyListingSection.tsx",
+      "category": "listings",
+      "industries": [
+        "realestate",
+        "rental",
+        "property"
+      ]
+    },
+    {
+      "template_name": "MinimalistHeader",
+      "description": "A clean and simple header with logo, navigation, and CTA button.",
+      "component_name": "MinimalistHeader",
+      "props": {
+        "logo": "string",
+        "logoText": "string",
+        "navigation": "Array<{ label: string; href?: string }>",
+        "ctaText": "string",
+        "ctaHref": "string"
+      },
+      "defaultProps": {
+        "logoText": "Brand",
+        "navigation": [
+          {
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "label": "About",
+            "href": "/about"
+          },
+          {
+            "label": "Services",
+            "href": "/services"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ],
+        "ctaText": "Contact Us",
+        "ctaHref": "/contact"
+      },
+      "subsections": [
+        "Logo & Brand Text",
+        "Navigation Links",
+        "CTA Button"
+      ],
+      "dependencies": [
+        "Button from UI",
+        "Link from Next.js"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS"
+      ],
+      "filepath": "system/headers/MinimalistHeader.tsx",
+      "category": "headers",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "CreativeHero",
+      "description": "Highly customizable and animated hero section for creative websites.",
+      "component_name": "CreativeHero",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "backgroundImage": "string",
+        "backgroundColor": "string",
+        "overlayColor": "string",
+        "textColor": "string",
+        "buttons": "Array<{ label: string; link: string; type: 'primary' | 'outline' }>",
+        "animation": "'float' | 'bounce' | 'wave'",
+        "layout": "'standard' | 'reversed' | 'overlapping'"
+      },
+      "defaultProps": {
+        "backgroundColor": "#ffffff",
+        "overlayColor": "rgba(255,255,255,0.8)",
+        "textColor": "#333333",
+        "buttons": [
+          {
+            "label": "Get Started",
+            "link": "#",
+            "type": "primary"
+          },
+          {
+            "label": "View Portfolio",
+            "link": "#",
+            "type": "outline"
+          }
+        ],
+        "animation": "float",
+        "layout": "standard"
+      },
+      "subsections": [
+        "Hero Background",
+        "Title and Subtitle",
+        "Description Text",
+        "Action Buttons",
+        "Animated Elements"
+      ],
+      "dependencies": [
+        "Button",
+        "Framer Motion (optional)"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "CSS Animations"
+      ],
+      "filepath": "system/heroes/CreativeHero.tsx",
+      "category": "heroes",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "ServicesSection",
+      "description": "Services grid with icons, descriptions, and call-to-action buttons.",
+      "component_name": "ServicesSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "Array<{ title: string; description: string; icon: string; features: string[]; price?: string; cta?: string }>",
+        "layout": "'grid' | 'list' | 'cards'",
+        "columns": "number"
+      },
+      "defaultProps": {
+        "title": "Our Services",
+        "subtitle": "Professional solutions for your business",
+        "layout": "grid",
+        "columns": 3
+      },
+      "subsections": [
+        "Services Header",
+        "Services Grid/List",
+        "Service Cards with Icons",
+        "Features List",
+        "CTA Buttons"
+      ],
+      "dependencies": [
+        "Card",
+        "Button",
+        "Lucide Icons"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/services/ServicesSection.tsx",
+      "category": "services",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "TestimonialsSection",
+      "description": "Customer testimonials with ratings, photos, and carousel functionality.",
+      "component_name": "TestimonialsSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "Array<{ name: string; role: string; company: string; content: string; rating: number; image?: string }>",
+        "layout": "'grid' | 'carousel' | 'masonry'",
+        "showRatings": "boolean"
+      },
+      "defaultProps": {
+        "title": "What Our Clients Say",
+        "subtitle": "Don't just take our word for it",
+        "layout": "grid",
+        "showRatings": true
+      },
+      "subsections": [
+        "Testimonials Header",
+        "Testimonial Cards",
+        "Star Ratings",
+        "Client Photos",
+        "Navigation Controls"
+      ],
+      "dependencies": [
+        "Card",
+        "Avatar",
+        "Star Icons"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/testimonials/TestimonialsSection.tsx",
+      "category": "testimonials",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "ContactSection",
+      "description": "Contact form with validation, contact information, and map integration.",
+      "component_name": "ContactSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "showForm": "boolean",
+        "showMap": "boolean",
+        "contactInfo": "{ phone: string; email: string; address: string; hours: string }",
+        "formFields": "Array<{ name: string; type: string; required: boolean; placeholder: string }>"
+      },
+      "defaultProps": {
+        "title": "Get In Touch",
+        "subtitle": "We'd love to hear from you",
+        "showForm": true,
+        "showMap": false
+      },
+      "subsections": [
+        "Contact Header",
+        "Contact Form",
+        "Contact Information",
+        "Map Integration",
+        "Social Links"
+      ],
+      "dependencies": [
+        "Form",
+        "Input",
+        "Textarea",
+        "Button",
+        "Card"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/contact/ContactSection.tsx",
+      "category": "contact",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "ModernFooter",
+      "description": "A modern, responsive footer with logo, links, and social icons.",
+      "component_name": "ModernFooter",
+      "props": {
+        "logo": "string",
+        "logoUrl": "string",
+        "columns": "Array<{ title: string; links: Array<{ text: string; url: string }> }>",
+        "socialLinks": "Array<{ platform: string; url: string }>",
+        "copyright": "string",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string"
+      },
+      "defaultProps": {
+        "logo": "YourBrand",
+        "backgroundColor": "#0f172a",
+        "textColor": "#ffffff",
+        "accentColor": "#6366f1"
+      },
+      "subsections": [
+        "Footer Logo",
+        "Navigation Columns",
+        "Social Media Links",
+        "Copyright Notice"
+      ],
+      "dependencies": [
+        "Lucide Icons",
+        "Next.js Link",
+        "Next.js Image"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "Lucide Icons"
+      ],
+      "filepath": "system/footers/ModernFooter.tsx",
+      "category": "footers",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "template_name": "GallerySection",
+      "description": "A responsive image gallery with lightbox functionality and category filtering.",
+      "component_name": "GallerySection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "images": "Array<{ url: string; alt: string; title?: string; category?: string }>",
+        "columns": "number",
+        "showCategories": "boolean",
+        "categories": "string[]"
+      },
+      "defaultProps": {
+        "title": "Gallery",
+        "subtitle": "Explore our collection",
+        "columns": 3,
+        "showCategories": true,
+        "categories": []
+      },
+      "subsections": [
+        "Gallery Header",
+        "Category Filters",
+        "Image Grid",
+        "Lightbox Modal"
+      ],
+      "dependencies": [
+        "Dialog",
+        "Button",
+        "Badge"
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "ShadCN UI"
+      ],
+      "filepath": "system/gallery/GallerySection.tsx",
+      "category": "gallery",
+      "industries": [
+        "all"
+      ]
+    },
+    {
+      "component_name": "AbsoluteGenerator",
+      "filepath": "src/components/system/AbsoluteGenerator.tsx",
+      "props": {
+        "onGenerate": "(absoluteData: any) => void"
+      }
+    },
+    {
+      "component_name": "AdvancedContentGenerator",
+      "filepath": "src/components/system/AdvancedContentGenerator.tsx",
+      "props": {
+        "industry": "string",
+        "style": "string",
+        "onGenerate": "(content: Record<string, any>) => void"
+      }
+    },
+    {
+      "component_name": "AirMultiplex",
+      "filepath": "src/components/system/AirMultiplex.tsx",
+      "props": {
+        "channels": "any[]",
+        "onTransmit": "(data: any) => void"
+      }
+    },
+    {
+      "component_name": "AirWave",
+      "filepath": "src/components/system/AirWave.tsx",
+      "props": {
+        "frequency": "number",
+        "onTransmit": "(signal: any) => void"
+      }
+    },
+    {
+      "component_name": "AirotropicHandler",
+      "filepath": "src/components/system/AirotropicHandler.tsx",
+      "props": {
+        "input": "any",
+        "onProcess": "(output: any) => void",
+        "onError": "(error: Error) => void"
+      }
+    },
+    {
+      "component_name": "Auth",
+      "filepath": "src/components/system/Auth.tsx",
+      "props": {
+        "credentials": "{ username: string"
+      }
+    },
+    {
+      "component_name": "ComponentDiary",
+      "filepath": "src/components/system/ComponentDiary.tsx",
+      "props": {
+        "components": "string[]",
+        "onAnalyze": "(analysis: Record<string, any>) => void"
+      }
+    },
+    {
+      "component_name": "ComponentModalityTemplates",
+      "filepath": "src/components/system/ComponentModalityTemplates.tsx",
+      "props": {
+        "industry": "string",
+        "onTemplatesLoaded": "(templates: Record<string, any>) => void"
+      }
+    },
+    {
+      "component_name": "Generator",
+      "filepath": "src/components/system/Generator.tsx",
+      "props": {
+        "schema": "Record<string, any>",
+        "onGenerate": "(data: any) => void"
+      }
+    },
+    {
+      "component_name": "GeometricAdapter",
+      "filepath": "src/components/system/GeometricAdapter.tsx",
+      "props": {
+        "input": "any",
+        "onTransform": "(output: any) => void",
+        "onError": "(error: Error) => void"
+      }
+    },
+    {
+      "component_name": "Shipper",
+      "filepath": "src/components/system/Shipper.tsx",
+      "props": {
+        "data": "any",
+        "destination": "string",
+        "onShipped": "() => void",
+        "onError": "(error: Error) => void"
+      }
+    },
+    {
+      "component_name": "BlogSection",
+      "filepath": "src/components/system/blog/BlogSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "posts": "BlogPost[]",
+        "showFeatured": "boolean",
+        "maxPosts": "number"
+      }
+    },
+    {
+      "component_name": "FAQSection",
+      "filepath": "src/components/system/faq/FAQSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "faqs": "FAQ[]",
+        "showSearch": "boolean",
+        "showCategories": "boolean",
+        "categories": "string[]"
+      }
+    },
+    {
+      "component_name": "AnimatedFeatures",
+      "filepath": "src/components/system/features/AnimatedFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "features": "Feature[]",
+        "animationType": "\"fade\" | \"slide\" | \"scale\" | \"bounce\""
+      }
+    },
+    {
+      "component_name": "ComparisonFeatures",
+      "filepath": "src/components/system/features/ComparisonFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "beforeLabel": "string",
+        "afterLabel": "string",
+        "comparisons": "ComparisonItem[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "IconFeatures",
+      "filepath": "src/components/system/features/IconFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "features": "Feature[]",
+        "backgroundColor": "string",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "InteractiveFeatures",
+      "filepath": "src/components/system/features/InteractiveFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "features": "InteractiveFeature[]"
+      }
+    },
+    {
+      "component_name": "MinimalistFeatures",
+      "filepath": "src/components/system/features/MinimalistFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "features": "Feature[]",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "columns": "2 | 3 | 4"
+      }
+    },
+    {
+      "component_name": "ValueProposition",
+      "filepath": "src/components/system/features/ValueProposition.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "cards": "ValueCard[]",
+        "columns": "3 | 4",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "CorporateFooter",
+      "filepath": "src/components/system/footers/CorporateFooter.tsx",
+      "props": {
+        "logo": "string",
+        "tagline": "string",
+        "links": "Array<{",
+        "title": "string",
+        "items": "Array<{",
+        "text": "string",
+        "url": "string"
+      }
+    },
+    {
+      "component_name": "CreativeFooter",
+      "filepath": "src/components/system/footers/CreativeFooter.tsx",
+      "props": {
+        "companyName": "string",
+        "logo": "string",
+        "logoUrl": "string",
+        "description": "string",
+        "links": "FooterLink[]",
+        "socialLinks": "SocialLink[]",
+        "copyright": "string",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string",
+        "showNewsletter": "boolean",
+        "newsletterTitle": "string",
+        "newsletterDescription": "string"
+      }
+    },
+    {
+      "component_name": "AdvancedGallery",
+      "filepath": "src/components/system/gallery/AdvancedGallery.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "GalleryItem[]",
+        "variant": "\"grid\" | \"masonry\" | \"carousel\" | \"lightbox\"",
+        "columns": "2 | 3 | 4",
+        "gap": "\"small\" | \"medium\" | \"large\"",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "FilterableGallery",
+      "filepath": "src/components/system/gallery/FilterableGallery.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "GalleryItem[]",
+        "showSearch": "boolean",
+        "showSort": "boolean",
+        "defaultView": "\"grid\" | \"list\""
+      }
+    },
+    {
+      "component_name": "MasonryGallery",
+      "filepath": "src/components/system/gallery/MasonryGallery.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "GalleryItem[]",
+        "columns": "number",
+        "showCategories": "boolean",
+        "categories": "string[]"
+      }
+    },
+    {
+      "component_name": "AnimatedHeader",
+      "filepath": "src/components/system/headers/AnimatedHeader.tsx",
+      "props": {
+        "logo": "string",
+        "companyName": "string",
+        "navigation": "Array<{",
+        "name": "string",
+        "href": "string",
+        "submenu": "Array<{ name: string"
+      }
+    },
+    {
+      "component_name": "CorporateHeader",
+      "filepath": "src/components/system/headers/CorporateHeader.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "CreativeHeader",
+      "filepath": "src/components/system/headers/CreativeHeader.tsx",
+      "props": {
+        "logo": "string",
+        "logoText": "string",
+        "navigation": "NavItem[]",
+        "ctaText": "string",
+        "ctaHref": "string",
+        "theme": "\"light\" | \"dark\""
+      }
+    },
+    {
+      "component_name": "GlassmorphismHeader",
+      "filepath": "src/components/system/headers/GlassmorphismHeader.tsx",
+      "props": {
+        "logo": "string",
+        "companyName": "string",
+        "navigation": "Array<{ name: string"
+      }
+    },
+    {
+      "component_name": "MegaMenuHeader",
+      "filepath": "src/components/system/headers/MegaMenuHeader.tsx",
+      "props": {
+        "logo": "string",
+        "companyName": "string",
+        "megaMenuItems": "Array<{",
+        "name": "string",
+        "href": "string",
+        "sections": "Array<{",
+        "title": "string",
+        "items": "Array<{ name: string"
+      }
+    },
+    {
+      "component_name": "AdaptiveHero",
+      "filepath": "src/components/system/heroes/AdaptiveHero.tsx",
+      "props": {
+        "variant": "\"image-left\" | \"image-right\" | \"centered\" | \"minimal\"",
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "items": "HeroItem[]",
+        "primaryButton": "{ label: string"
+      }
+    },
+    {
+      "component_name": "BusinessHero",
+      "filepath": "src/components/system/heroes/BusinessHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryButton": "{",
+        "label": "string",
+        "link": "string"
+      }
+    },
+    {
+      "component_name": "CorporateHero",
+      "filepath": "src/components/system/heroes/CorporateHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryButton": "{",
+        "label": "string",
+        "link": "string"
+      }
+    },
+    {
+      "component_name": "GradientHero",
+      "filepath": "src/components/system/heroes/GradientHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryButton": "{",
+        "text": "string",
+        "link": "string"
+      }
+    },
+    {
+      "component_name": "InteractiveHero",
+      "filepath": "src/components/system/heroes/InteractiveHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryCTA": "string",
+        "secondaryCTA": "string",
+        "backgroundImage": "string",
+        "stats": "Array<{ label: string"
+      }
+    },
+    {
+      "component_name": "MinimalistHero",
+      "filepath": "src/components/system/heroes/MinimalistHero.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "ParallaxHero",
+      "filepath": "src/components/system/heroes/ParallaxHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "backgroundImage": "string",
+        "overlayOpacity": "number",
+        "ctaButton": "{",
+        "text": "string",
+        "link": "string"
+      }
+    },
+    {
+      "component_name": "SplitScreenHero",
+      "filepath": "src/components/system/heroes/SplitScreenHero.tsx",
+      "props": {
+        "leftTitle": "string",
+        "leftSubtitle": "string",
+        "leftDescription": "string",
+        "leftCTA": "string",
+        "leftImage": "string",
+        "rightTitle": "string",
+        "rightSubtitle": "string",
+        "rightDescription": "string",
+        "rightCTA": "string",
+        "rightImage": "string",
+        "features": "string[]",
+        "stats": "Array<{ label: string"
+      }
+    },
+    {
+      "component_name": "VideoBackgroundHero",
+      "filepath": "src/components/system/heroes/VideoBackgroundHero.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryCTA": "string",
+        "secondaryCTA": "string",
+        "videoUrl": "string",
+        "posterImage": "string",
+        "overlayOpacity": "number",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "FarmingProcess",
+      "filepath": "src/components/system/industry/agriculture/FarmingProcess.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "steps": "ProcessStep[]",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "ProductShowcase",
+      "filepath": "src/components/system/industry/agriculture/ProductShowcase.tsx",
+      "props": {
+        "title": "string",
+        "products": "Product[]",
+        "categories": "string[]",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "SustainabilitySection",
+      "filepath": "src/components/system/industry/agriculture/SustainabilitySection.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "metrics": "SustainabilityMetric[]",
+        "practices": "SustainabilityPractice[]",
+        "certifications": "Certification[]",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "FinancingCalculator",
+      "filepath": "src/components/system/industry/automotive/FinancingCalculator.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "ServiceScheduler",
+      "filepath": "src/components/system/industry/automotive/ServiceScheduler.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "VehicleInventory",
+      "filepath": "src/components/system/industry/automotive/VehicleInventory.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "AdvancedProductFilter",
+      "filepath": "src/components/system/industry/ecommerce/AdvancedProductFilter.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "products": "Product[]",
+        "onFilterChange": "(filteredProducts: Product[]) => void"
+      }
+    },
+    {
+      "component_name": "ProductComparison",
+      "filepath": "src/components/system/industry/ecommerce/ProductComparison.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "products": "Product[]",
+        "availableProducts": "Product[]"
+      }
+    },
+    {
+      "component_name": "ProductGrid",
+      "filepath": "src/components/system/industry/ecommerce/ProductGrid.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "products": "Product[]",
+        "showFilters": "boolean",
+        "showSearch": "boolean",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "ShoppingCart",
+      "filepath": "src/components/system/industry/ecommerce/ShoppingCart.tsx",
+      "props": {
+        "title": "string",
+        "items": "CartItem[]",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "WishlistManager",
+      "filepath": "src/components/system/industry/ecommerce/WishlistManager.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "wishlists": "WishlistItem[]"
+      }
+    },
+    {
+      "component_name": "CourseGrid",
+      "filepath": "src/components/system/industry/education/CourseGrid.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "courses": "Course[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "FacultyProfiles",
+      "filepath": "src/components/system/industry/education/FacultyProfiles.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "faculty": "Faculty[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "InteractiveQuizBuilder",
+      "filepath": "src/components/system/industry/education/InteractiveQuizBuilder.tsx",
+      "props": {
+        "initialQuiz": "Quiz",
+        "onSave": "(quiz: Quiz) => void",
+        "onPreview": "(quiz: Quiz) => void",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "LearningPathVisualizer",
+      "filepath": "src/components/system/industry/education/LearningPathVisualizer.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "modules": "Module[]",
+        "className": "string",
+        "onModuleSelect": "(module: Module) => void",
+        "onUnitSelect": "(unit: Unit, moduleId: string) => void"
+      }
+    },
+    {
+      "component_name": "VirtualClassroom",
+      "filepath": "src/components/system/industry/education/VirtualClassroom.tsx",
+      "props": {
+        "className": "string",
+        "courseTitle": "string",
+        "courseDescription": "string",
+        "instructor": "Participant",
+        "participants": "Participant[]",
+        "resources": "Resource[]",
+        "initialMessages": "ChatMessage[]",
+        "onSendMessage": "(message: string, isPrivate: boolean, recipientId?: string) => void",
+        "onToggleCamera": "() => void",
+        "onToggleMic": "() => void",
+        "onToggleScreenShare": "() => void",
+        "onEndCall": "() => void",
+        "onRaiseHand": "() => void",
+        "onDownloadResource": "(resourceId: string) => void"
+      }
+    },
+    {
+      "component_name": "ArtistProfiles",
+      "filepath": "src/components/system/industry/entertainement/ArtistProfiles.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "artists": "Artist[]",
+        "categories": "string[]",
+        "onArtistClick": "(artist: Artist) => void"
+      }
+    },
+    {
+      "component_name": "ShowcaseGallery",
+      "filepath": "src/components/system/industry/entertainement/ShowcaseGallery.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "items": "ShowcaseItem[]",
+        "categories": "string[]",
+        "onItemClick": "(item: ShowcaseItem) => void"
+      }
+    },
+    {
+      "component_name": "TicketingSystem",
+      "filepath": "src/components/system/industry/entertainement/TicketingSystem.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "events": "Event[]",
+        "categories": "string[]",
+        "onPurchaseComplete": "(eventId: string, seats: number, totalPrice: number) => void"
+      }
+    },
+    {
+      "component_name": "CalculatorTools",
+      "filepath": "src/components/system/industry/finance/CalculatorTools.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "ServicePackages",
+      "filepath": "src/components/system/industry/finance/ServicePackages.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "packages": "ServicePackage[]",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "ClassSchedule",
+      "filepath": "src/components/system/industry/fitness/ClassSchedule.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "classes": "FitnessClass[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "AppointmentScheduler",
+      "filepath": "src/components/system/industry/healthcare/AppointmentScheduler.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "doctors": "Doctor[]",
+        "showDoctorSelection": "boolean"
+      }
+    },
+    {
+      "component_name": "SymptomChecker",
+      "filepath": "src/components/system/industry/healthcare/SymptomChecker.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "symptoms": "Symptom[]",
+        "conditions": "Condition[]"
+      }
+    },
+    {
+      "component_name": "TelehealthPortal",
+      "filepath": "src/components/system/industry/healthcare/TelehealthPortal.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "doctors": "Doctor[]",
+        "appointments": "Appointment[]"
+      }
+    },
+    {
+      "component_name": "PracticeAreas",
+      "filepath": "src/components/system/industry/law/PracticeAreas.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "areas": "PracticeArea[]"
+      }
+    },
+    {
+      "component_name": "ManufacturingProcess",
+      "filepath": "src/components/system/industry/manufacturing/ManufacturingProcess.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "steps": "ProcessStep[]",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "ProductCatalog",
+      "filepath": "src/components/system/industry/manufacturing/ProductCatalog.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "products": "Product[]",
+        "showFilters": "boolean",
+        "showSearch": "boolean"
+      }
+    },
+    {
+      "component_name": "QualityAssurance",
+      "filepath": "src/components/system/industry/manufacturing/QualityAssurance.tsx",
+      "props": {
+        "title": "string",
+        "description": "string",
+        "metrics": "QualityMetric[]",
+        "checks": "QualityCheck[]",
+        "reports": "QualityReport[]",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "DonationForm",
+      "filepath": "src/components/system/industry/nonprofit/DonationForm.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "organizationName": "string",
+        "donationOptions": "DonationOption[]",
+        "causes": "string[]",
+        "showImpact": "boolean"
+      }
+    },
+    {
+      "component_name": "ImpactStats",
+      "filepath": "src/components/system/industry/nonprofit/ImpactStats.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "VolunteerSection",
+      "filepath": "src/components/system/industry/nonprofit/VolunteerSection.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "MarketAnalytics",
+      "filepath": "src/components/system/industry/realestate/MarketAnalytics.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "marketData": "MarketData[]",
+        "defaultLocation": "string"
+      }
+    },
+    {
+      "component_name": "MortgageCalculator",
+      "filepath": "src/components/system/industry/realestate/MortgageCalculator.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "defaultValues": "{",
+        "homePrice": "number",
+        "downPayment": "number",
+        "loanTerm": "number",
+        "interestRate": "number"
+      }
+    },
+    {
+      "component_name": "VirtualTourViewer",
+      "filepath": "src/components/system/industry/realestate/VirtualTourViewer.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "property": "Property",
+        "autoPlay": "boolean"
+      }
+    },
+    {
+      "component_name": "ServicesMenu",
+      "filepath": "src/components/system/industry/spa/ServicesMenu.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "SpaService[]"
+      }
+    },
+    {
+      "component_name": "TechFeatures",
+      "filepath": "src/components/system/industry/technology/TechFeatures.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "features": "Array<{",
+        "description": "string",
+        "icon": "string",
+        "benefits": "string[]"
+      }
+    },
+    {
+      "component_name": "TechPortfolio",
+      "filepath": "src/components/system/industry/technology/TechPortfolio.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "projects": "Array<{",
+        "name": "string",
+        "description": "string",
+        "image": "string",
+        "technologies": "string[]",
+        "liveUrl": "string",
+        "githubUrl": "string",
+        "category": "string"
+      }
+    },
+    {
+      "component_name": "TechPricing",
+      "filepath": "src/components/system/industry/technology/TechPricing.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "plans": "Array<{",
+        "name": "string",
+        "price": "string",
+        "period": "string",
+        "description": "string",
+        "features": "string[]",
+        "popular": "boolean",
+        "buttonText": "string",
+        "badge": "string"
+      }
+    },
+    {
+      "component_name": "TechProcess",
+      "filepath": "src/components/system/industry/technology/TechProcess.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "steps": "Array<{",
+        "description": "string",
+        "icon": "string",
+        "duration": "string"
+      }
+    },
+    {
+      "component_name": "TechServices",
+      "filepath": "src/components/system/industry/technology/TechServices.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "Array<{",
+        "description": "string",
+        "icon": "string",
+        "features": "string[]",
+        "technologies": "string[]",
+        "startingPrice": "string"
+      }
+    },
+    {
+      "component_name": "TechStats",
+      "filepath": "src/components/system/industry/technology/TechStats.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "stats": "Array<{",
+        "number": "string",
+        "label": "string",
+        "icon": "string",
+        "description": "string"
+      }
+    },
+    {
+      "component_name": "TechTeam",
+      "filepath": "src/components/system/industry/technology/TechTeam.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "team": "Array<{",
+        "name": "string",
+        "role": "string",
+        "bio": "string",
+        "image": "string",
+        "skills": "string[]",
+        "experience": "string",
+        "social": "{",
+        "github": "string",
+        "linkedin": "string",
+        "twitter": "string"
+      }
+    },
+    {
+      "component_name": "TechTestimonials",
+      "filepath": "src/components/system/industry/technology/TechTestimonials.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "Array<{",
+        "name": "string",
+        "role": "string",
+        "company": "string",
+        "content": "string",
+        "rating": "number",
+        "image": "string",
+        "projectType": "string"
+      }
+    },
+    {
+      "component_name": "DestinationGallery",
+      "filepath": "src/components/system/industry/travel/DestinationGallery.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "TravelItinerary",
+      "filepath": "src/components/system/industry/travel/TravelItinerary.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "TravelPackages",
+      "filepath": "src/components/system/industry/travel/TravelPackages.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "packages": "TravelPackage[]",
+        "showFilters": "boolean"
+      }
+    },
+    {
+      "component_name": "BookingSystem",
+      "filepath": "src/components/system/interactive/BookingSystem.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "Service[]",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "SearchableSection",
+      "filepath": "src/components/system/interactive/SearchableSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "SearchableItem[]",
+        "categories": "string[]",
+        "renderItem": "(item: SearchableItem) => React.ReactNode",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "placeholder": "string"
+      }
+    },
+    {
+      "component_name": "NewsletterSection",
+      "filepath": "src/components/system/newsletter/NewsletterSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "buttonText": "string",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string",
+        "textAlignment": "TextAlignment",
+        "style": "\"card\" | \"inline\" | \"split\"",
+        "backgroundImage": "string",
+        "keywords": "string[]"
+      }
+    },
+    {
+      "component_name": "FilterablePortfolio",
+      "filepath": "src/components/system/portfolio/FilterablePortfolio.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "PortfolioItem[]",
+        "categories": "string[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "InteractivePortfolio",
+      "filepath": "src/components/system/portfolio/InteractivePortfolio.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "items": "PortfolioItem[]",
+        "categories": "string[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "PortfolioSection",
+      "filepath": "src/components/system/portfolio/PortfolioSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "items": "PortfolioItem[]",
+        "categories": "string[]",
+        "layout": "\"grid\" | \"masonry\" | \"carousel\"",
+        "columns": "2 | 3 | 4",
+        "theme": "{",
+        "primaryColor": "string",
+        "secondaryColor": "string",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "AdvancedPricing",
+      "filepath": "src/components/system/pricing/AdvancedPricing.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "plans": "PricingPlan[]",
+        "showToggle": "boolean",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string"
+      }
+    },
+    {
+      "component_name": "ComparisonPricing",
+      "filepath": "src/components/system/pricing/ComparisonPricing.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "features": "Feature[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "DynamicPricing",
+      "filepath": "src/components/system/pricing/DynamicPricing.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "plans": "PricingPlan[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "TieredPricing",
+      "filepath": "src/components/system/pricing/TieredPricing.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "plans": "PricingPlan[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "ProcessSection",
+      "filepath": "src/components/system/process/ProcessSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "steps": "ProcessStep[]",
+        "layout": "\"horizontal\" | \"vertical\"",
+        "theme": "{",
+        "primaryColor": "string",
+        "secondaryColor": "string",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "AnimatedCounters",
+      "filepath": "src/components/system/stats/AnimatedCounters.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "stats": "StatItem[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "RealTimeStats",
+      "filepath": "src/components/system/stats/RealTimeStats.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "stats": "RealTimeStat[]",
+        "updateInterval": "number",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "StatsSection",
+      "filepath": "src/components/system/stats/StatsSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "stats": "StatItem[]",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string",
+        "textAlignment": "TextAlignment",
+        "columns": "2 | 3 | 4",
+        "style": "\"cards\" | \"simple\" | \"bordered\"",
+        "animated": "boolean",
+        "keywords": "string[]"
+      }
+    },
+    {
+      "component_name": "AdvancedTeam",
+      "filepath": "src/components/system/team/AdvancedTeam.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "members": "TeamMember[]",
+        "variant": "\"grid\" | \"list\" | \"cards\" | \"minimal\"",
+        "columns": "2 | 3 | 4",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string"
+      }
+    },
+    {
+      "component_name": "InteractiveTeam",
+      "filepath": "src/components/system/team/InteractiveTeam.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "members": "TeamMember[]",
+        "departments": "string[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "OrganizationalChart",
+      "filepath": "src/components/system/team/OrganizationalChart.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "teamData": "TeamMember[]",
+        "showContactInfo": "boolean"
+      }
+    },
+    {
+      "component_name": "ecommerce-template",
+      "filepath": "src/components/system/templates/ecommerce-template.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "restaurant-template",
+      "filepath": "src/components/system/templates/restaurant-template.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "tech-startup-template",
+      "filepath": "src/components/system/templates/tech-startup-template.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "AdvancedTestimonials",
+      "filepath": "src/components/system/testimonials/AdvancedTestimonials.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "Testimonial[]",
+        "variant": "\"cards\" | \"carousel\" | \"grid\" | \"quotes\"",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string"
+      }
+    },
+    {
+      "component_name": "SocialProofTestimonials",
+      "filepath": "src/components/system/testimonials/SocialProofTestimonials.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "Testimonial[]",
+        "socialProofData": "SocialProofData",
+        "showStats": "boolean",
+        "showRecentActivity": "boolean"
+      }
+    },
+    {
+      "component_name": "VideoTestimonials",
+      "filepath": "src/components/system/testimonials/VideoTestimonials.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "VideoTestimonial[]",
+        "theme": "any"
+      }
+    },
+    {
+      "component_name": "ThemeCustomizer",
+      "filepath": "src/components/system/theme/ThemeCustomizer.tsx",
+      "props": {
+        "onThemeChange": "(theme: Theme) => void",
+        "initialThemeId": "string",
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "ThemeSelector",
+      "filepath": "src/components/system/theme/ThemeSelector.tsx",
+      "props": {
+        "className": "string"
+      }
+    },
+    {
+      "component_name": "VideoSection",
+      "filepath": "src/components/system/video/VideoSection.tsx",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "videoUrl": "string",
+        "posterUrl": "string",
+        "videoTitle": "string",
+        "videoDescription": "string",
+        "layout": "\"full\" | \"split\" | \"card\"",
+        "autoplay": "boolean",
+        "controls": "boolean",
+        "muted": "boolean",
+        "loop": "boolean",
+        "theme": "{",
+        "primaryColor": "string",
+        "secondaryColor": "string",
+        "backgroundColor": "string",
+        "textColor": "string"
+      }
+    },
+    {
+      "component_name": "alert",
+      "filepath": "src/components/ui/alert.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "avatar",
+      "filepath": "src/components/ui/avatar.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "badge",
+      "filepath": "src/components/ui/badge.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "button",
+      "filepath": "src/components/ui/button.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "calendar",
+      "filepath": "src/components/ui/calendar.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "card",
+      "filepath": "src/components/ui/card.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "checkbox",
+      "filepath": "src/components/ui/checkbox.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "dialog",
+      "filepath": "src/components/ui/dialog.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "dropdown-menu",
+      "filepath": "src/components/ui/dropdown-menu.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "input",
+      "filepath": "src/components/ui/input.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "label",
+      "filepath": "src/components/ui/label.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "progress",
+      "filepath": "src/components/ui/progress.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "radio-group",
+      "filepath": "src/components/ui/radio-group.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "scroll-area",
+      "filepath": "src/components/ui/scroll-area.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "select",
+      "filepath": "src/components/ui/select.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "separator",
+      "filepath": "src/components/ui/separator.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "simple-calendar",
+      "filepath": "src/components/ui/simple-calendar.tsx",
+      "props": {
+        "mode": "\"single\" | \"multiple\" | \"range\"",
+        "selected": "Date | Date[] | { from: Date"
+      }
+    },
+    {
+      "component_name": "simple-radio-group",
+      "filepath": "src/components/ui/simple-radio-group.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "skeleton",
+      "filepath": "src/components/ui/skeleton.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "slider",
+      "filepath": "src/components/ui/slider.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "switch",
+      "filepath": "src/components/ui/switch.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "table",
+      "filepath": "src/components/ui/table.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "tabs",
+      "filepath": "src/components/ui/tabs.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "textarea",
+      "filepath": "src/components/ui/textarea.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "toast",
+      "filepath": "src/components/ui/toast.tsx",
+      "props": {}
+    },
+    {
+      "component_name": "toaster",
+      "filepath": "src/components/ui/toaster.tsx",
+      "props": {}
+    }
+  ]
+}
