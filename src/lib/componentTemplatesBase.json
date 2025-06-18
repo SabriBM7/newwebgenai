@@ -1,0 +1,376 @@
+{
+  "components": [
+    {
+      "template_name": "AboutSection",
+      "description": "An informative about section featuring company mission, vision, stats, and values with optional imagery.",
+      "component_name": "AboutSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "image": "string",
+        "stats": "Array<{ number: string; label: string; icon?: string }>",
+        "features": "Array<{ title: string; description: string; icon?: string }>",
+        "mission": "string",
+        "vision": "string"
+      },
+      "defaultProps": {
+        "title": "About Our Company",
+        "subtitle": "Building the future together",
+        "description": "We are a forward-thinking company dedicated to delivering exceptional solutions that drive innovation and create lasting value for our clients and communities."
+      },
+      "subsections": [
+        "Header Title/Subtitles",
+        "Image or Fallback",
+        "Mission and Vision",
+        "Stats Cards",
+        "Features Cards"
+      ],
+      "dependencies": ["Card, CardContent from UI", "Button", "Icons from lucide-react"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/about/AboutSection.tsx",
+      "category": "about",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "CTASection",
+      "description": "A call-to-action section with primary/secondary buttons, trust indicators, and optional background styles.",
+      "component_name": "CTASection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "primaryButtonText": "string",
+        "secondaryButtonText": "string",
+        "primaryButtonLink": "string",
+        "secondaryButtonLink": "string",
+        "backgroundImage": "string",
+        "variant": "'default' | 'gradient' | 'image' | 'minimal'",
+        "showStats": "boolean",
+        "stats": "Array<{ number: string; label: string }>"
+      },
+      "defaultProps": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Join thousands of satisfied customers",
+        "description": "Take the next step towards achieving your goals. Our team is ready to help you succeed.",
+        "primaryButtonText": "Get Started Today",
+        "secondaryButtonText": "Learn More",
+        "primaryButtonLink": "#",
+        "secondaryButtonLink": "#",
+        "variant": "default",
+        "showStats": true
+      },
+      "subsections": ["Header and Description", "Primary and Secondary Buttons", "Stats display", "Trust indicators"],
+      "dependencies": ["Button", "Lucide Icons (Star, Users, Award)"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/cta/CTASection.tsx",
+      "category": "cta",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "EventsSection",
+      "description": "An interactive events listing section supporting grid, list, and calendar views with dynamic filters. Includes category tabs, calendar dialog, and modals for detailed event information.",
+      "component_name": "EventsSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "events": "Array<{ id: string; title: string; description: string; date: string; time?: string; location?: string; category?: string; imageUrl?: string; registrationUrl?: string; isFeatured?: boolean }>",
+        "categories": "string[]",
+        "layout": "'grid' | 'list' | 'calendar'",
+        "showFilters": "boolean",
+        "theme": "{ primaryColor?: string; secondaryColor?: string; backgroundColor?: string; textColor?: string }"
+      },
+      "defaultProps": {
+        "title": "Upcoming Events",
+        "subtitle": "Join Us",
+        "description": "Check out our upcoming events and register to attend.",
+        "layout": "grid",
+        "showFilters": true
+      },
+      "subsections": [
+        "Section Header (Title, Subtitle, Description)",
+        "Tabs for Category Filtering",
+        "Date Picker via Dialog",
+        "Grid / List / Calendar view of events",
+        "Event Details in Dialog Modal",
+        "Event Card with image, location, category, CTA"
+      ],
+      "dependencies": [
+        "Tabs, TabsList, TabsTrigger",
+        "Dialog, DialogTrigger, DialogContent",
+        "Button",
+        "Calendar (custom component)",
+        "cn() utility from @/lib/utils",
+        "SVG icons inline"
+      ],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI", "Custom Dialog & Calendar Components"],
+      "filepath": "src/components/system/events/EventsSection.tsx",
+      "category": "events",
+      "industries": ["restaurant", "education", "entertainment", "fitness", "nonprofit", "community"]
+    },
+    {
+      "template_name": "MenuSection",
+      "description": "Restaurant menu with categories, items, prices, and descriptions. Supports filtering and search.",
+      "component_name": "MenuSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "categories": "Array<{ name: string; items: Array<{ name: string; description: string; price: string; image?: string; dietary?: string[] }> }>",
+        "showSearch": "boolean",
+        "showFilters": "boolean"
+      },
+      "defaultProps": {
+        "title": "Our Menu",
+        "subtitle": "Delicious dishes made with fresh ingredients",
+        "showSearch": true,
+        "showFilters": true
+      },
+      "subsections": ["Menu Header", "Category Tabs", "Search and Filters", "Menu Items Grid", "Item Details Modal"],
+      "dependencies": ["Tabs, TabsList, TabsTrigger", "Input", "Button", "Badge", "Dialog"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/industry/restaurant/MenuSection.tsx",
+      "category": "menu",
+      "industries": ["restaurant", "cafe", "catering", "foodservice"]
+    },
+    {
+      "template_name": "PropertyListingSection",
+      "description": "Real estate property listings with search, filters, and detailed property cards.",
+      "component_name": "PropertyListingSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "properties": "Array<{ id: string; title: string; price: string; location: string; bedrooms: number; bathrooms: number; sqft: number; images: string[]; features: string[]; type: string }>",
+        "showSearch": "boolean",
+        "showFilters": "boolean",
+        "viewMode": "'grid' | 'list' | 'map'"
+      },
+      "defaultProps": {
+        "title": "Featured Properties",
+        "subtitle": "Find your dream home",
+        "showSearch": true,
+        "showFilters": true,
+        "viewMode": "grid"
+      },
+      "subsections": [
+        "Search and Filter Bar",
+        "View Mode Toggle",
+        "Property Cards Grid/List",
+        "Property Details Modal",
+        "Contact Agent CTA"
+      ],
+      "dependencies": ["Input", "Select", "Button", "Card", "Badge", "Dialog"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/industry/realestate/PropertyListingSection.tsx",
+      "category": "listings",
+      "industries": ["realestate", "rental", "property"]
+    },
+    {
+      "template_name": "MinimalistHeader",
+      "description": "A clean and simple header with logo, navigation, and CTA button.",
+      "component_name": "MinimalistHeader",
+      "props": {
+        "logo": "string",
+        "logoText": "string",
+        "navigation": "Array<{ label: string; href?: string }>",
+        "ctaText": "string",
+        "ctaHref": "string"
+      },
+      "defaultProps": {
+        "logoText": "Brand",
+        "navigation": [
+          { "label": "Home", "href": "/" },
+          { "label": "About", "href": "/about" },
+          { "label": "Services", "href": "/services" },
+          { "label": "Contact", "href": "/contact" }
+        ],
+        "ctaText": "Contact Us",
+        "ctaHref": "/contact"
+      },
+      "subsections": ["Logo & Brand Text", "Navigation Links", "CTA Button"],
+      "dependencies": ["Button from UI", "Link from Next.js"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "filepath": "src/components/system/headers/MinimalistHeader.tsx",
+      "category": "headers",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "CreativeHero",
+      "description": "Highly customizable and animated hero section for creative websites.",
+      "component_name": "CreativeHero",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "backgroundImage": "string",
+        "backgroundColor": "string",
+        "overlayColor": "string",
+        "textColor": "string",
+        "buttons": "Array<{ label: string; link: string; type: 'primary' | 'outline' }>",
+        "animation": "'float' | 'bounce' | 'wave'",
+        "layout": "'standard' | 'reversed' | 'overlapping'"
+      },
+      "defaultProps": {
+        "backgroundColor": "#ffffff",
+        "overlayColor": "rgba(255,255,255,0.8)",
+        "textColor": "#333333",
+        "buttons": [
+          { "label": "Get Started", "link": "#", "type": "primary" },
+          { "label": "View Portfolio", "link": "#", "type": "outline" }
+        ],
+        "animation": "float",
+        "layout": "standard"
+      },
+      "subsections": [
+        "Hero Background",
+        "Title and Subtitle",
+        "Description Text",
+        "Action Buttons",
+        "Animated Elements"
+      ],
+      "dependencies": ["Button", "Framer Motion (optional)"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "CSS Animations"],
+      "filepath": "src/components/system/heroes/CreativeHero.tsx",
+      "category": "heroes",
+      "industries": ["all", "creative", "design", "agency"]
+    },
+    {
+      "template_name": "ServicesSection",
+      "description": "Services grid with icons, descriptions, and call-to-action buttons.",
+      "component_name": "ServicesSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "Array<{ title: string; description: string; icon: string; features: string[]; price?: string; cta?: string }>",
+        "layout": "'grid' | 'list' | 'cards'",
+        "columns": "number"
+      },
+      "defaultProps": {
+        "title": "Our Services",
+        "subtitle": "Professional solutions for your business",
+        "layout": "grid",
+        "columns": 3
+      },
+      "subsections": [
+        "Services Header",
+        "Services Grid/List",
+        "Service Cards with Icons",
+        "Features List",
+        "CTA Buttons"
+      ],
+      "dependencies": ["Card", "Button", "Lucide Icons"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/services/ServicesSection.tsx",
+      "category": "services",
+      "industries": ["all", "business", "consulting", "technology"]
+    },
+    {
+      "template_name": "TestimonialsSection",
+      "description": "Customer testimonials with ratings, photos, and carousel functionality.",
+      "component_name": "TestimonialsSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "testimonials": "Array<{ name: string; role: string; company: string; content: string; rating: number; image?: string }>",
+        "layout": "'grid' | 'carousel' | 'masonry'",
+        "showRatings": "boolean"
+      },
+      "defaultProps": {
+        "title": "What Our Clients Say",
+        "subtitle": "Don't just take our word for it",
+        "layout": "grid",
+        "showRatings": true
+      },
+      "subsections": [
+        "Testimonials Header",
+        "Testimonial Cards",
+        "Star Ratings",
+        "Client Photos",
+        "Navigation Controls"
+      ],
+      "dependencies": ["Card", "Avatar", "Star Icons"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/testimonials/TestimonialsSection.tsx",
+      "category": "testimonials",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "ContactSection",
+      "description": "Contact form with validation, contact information, and map integration.",
+      "component_name": "ContactSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "showForm": "boolean",
+        "showMap": "boolean",
+        "contactInfo": "{ phone: string; email: string; address: string; hours: string }",
+        "formFields": "Array<{ name: string; type: string; required: boolean; placeholder: string }>"
+      },
+      "defaultProps": {
+        "title": "Get In Touch",
+        "subtitle": "We'd love to hear from you",
+        "showForm": true,
+        "showMap": false
+      },
+      "subsections": ["Contact Header", "Contact Form", "Contact Information", "Map Integration", "Social Links"],
+      "dependencies": ["Form", "Input", "Textarea", "Button", "Card"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/contact/ContactSection.tsx",
+      "category": "contact",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "ModernFooter",
+      "description": "A modern, responsive footer with logo, links, and social icons.",
+      "component_name": "ModernFooter",
+      "props": {
+        "logo": "string",
+        "logoUrl": "string",
+        "columns": "Array<{ title: string; links: Array<{ text: string; url: string }> }>",
+        "socialLinks": "Array<{ platform: string; url: string }>",
+        "copyright": "string",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "accentColor": "string"
+      },
+      "defaultProps": {
+        "logo": "YourBrand",
+        "backgroundColor": "#0f172a",
+        "textColor": "#ffffff",
+        "accentColor": "#6366f1"
+      },
+      "subsections": ["Footer Logo", "Navigation Columns", "Social Media Links", "Copyright Notice"],
+      "dependencies": ["Lucide Icons", "Next.js Link", "Next.js Image"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "Lucide Icons"],
+      "filepath": "src/components/system/footers/ModernFooter.tsx",
+      "category": "footers",
+      "industries": ["all"]
+    },
+    {
+      "template_name": "GallerySection",
+      "description": "A responsive image gallery with lightbox functionality and category filtering.",
+      "component_name": "GallerySection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "images": "Array<{ url: string; alt: string; title?: string; category?: string }>",
+        "columns": "number",
+        "showCategories": "boolean",
+        "categories": "string[]"
+      },
+      "defaultProps": {
+        "title": "Gallery",
+        "subtitle": "Explore our collection",
+        "columns": 3,
+        "showCategories": true,
+        "categories": []
+      },
+      "subsections": ["Gallery Header", "Category Filters", "Image Grid", "Lightbox Modal"],
+      "dependencies": ["Dialog", "Button", "Badge"],
+      "technologies": ["React", "TypeScript", "TailwindCSS", "ShadCN UI"],
+      "filepath": "src/components/system/gallery/GallerySection.tsx",
+      "category": "gallery",
+      "industries": ["all", "photography", "art", "portfolio", "restaurant"]
+    }
+  ]
+}

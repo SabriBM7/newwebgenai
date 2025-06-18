@@ -26,6 +26,8 @@ import {
     TrendingUp,
     Award,
     Target,
+    Brain,
+    Database,
 } from "lucide-react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
@@ -39,17 +41,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { checkAIAvailability } from "@/lib/ai-availability"
-import { generateWebsitePreview } from "@/lib/preview-utils"
-import WebsiteRenderer from "@/components/website-renderer"
 
 export default function Home() {
     const [input, setInput] = useState("")
     const [isGenerating, setIsGenerating] = useState(false)
+    const [generationStage, setGenerationStage] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [websiteName, setWebsiteName] = useState("")
     const [selectedIndustry, setSelectedIndustry] = useState("")
     const [selectedStyle, setSelectedStyle] = useState("modern")
-    const [aiProvider, setAiProvider] = useState("enhanced") // Default to enhanced
+    const [aiProvider, setAiProvider] = useState("gemini-rag") // Default to gemini-rag for better results
     const [includeImages, setIncludeImages] = useState(true)
     const [targetAudience, setTargetAudience] = useState("")
     const [businessGoals, setBusinessGoals] = useState("")
@@ -58,8 +59,6 @@ export default function Home() {
         wizardlm: boolean
         ollama: boolean
     }>({ wizardlm: false, ollama: false })
-    const [previewData, setPreviewData] = useState<any>(null)
-    const [showPreview, setShowPreview] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const [activeStep, setActiveStep] = useState(0)
     const router = useRouter()
@@ -70,13 +69,6 @@ export default function Home() {
             try {
                 const availability = await checkAIAvailability()
                 setAiAvailability(availability)
-
-                // Keep enhanced as default since it's most reliable
-                if (availability.wizardlm) {
-                    // setAiProvider("wizardlm") // Commented out to keep enhanced as default
-                } else if (availability.ollama) {
-                    // setAiProvider("ollama") // Commented out to keep enhanced as default
-                }
             } catch (error) {
                 console.log("AI availability check failed, using enhanced templates")
             }
@@ -91,13 +83,6 @@ export default function Home() {
 
         return () => clearInterval(interval)
     }, [])
-
-    const getPreviewParams = () => ({
-        websiteName: websiteName || "Your Business",
-        industry: selectedIndustry || "technology",
-        style: selectedStyle,
-        description: input || "Professional services business",
-    })
 
     const websiteTypes = [
         "Modern SaaS platform with user dashboard and pricing tiers",
@@ -304,29 +289,32 @@ export default function Home() {
 
         if (!input.trim() || isGenerating) return
 
+        // Validate required fields
+        if (!websiteName.trim() || !selectedIndustry || !selectedStyle) {
+            setError("Please fill in all required fields (Business Name, Industry, and Design Style)")
+            return
+        }
+
         setIsGenerating(true)
         setError(null)
-        setPreviewData(null)
+        setGenerationStage("Initializing AI generation...")
 
         try {
-            console.log("🚀 Generating website with enhanced AI...")
+            console.log("🚀 Starting website generation with RAG...")
 
-            // Generate preview immediately
-            const preview = generateWebsitePreview({
-                websiteName: websiteName || "Your Business",
-                industry: selectedIndustry,
-                style: selectedStyle,
-                description: input,
-            })
-            setPreviewData(preview)
-            setShowPreview(true)
+            // Clear any existing website data
+            localStorage.removeItem("generatedWebsite")
 
-            // Scroll to preview
-            setTimeout(() => {
-                document.getElementById("preview-section")?.scrollIntoView({ behavior: "smooth" })
-            }, 300)
+            // Show progress stages
+            setGenerationStage("Analyzing industry requirements...")
+            await new Promise((resolve) => setTimeout(resolve, 1000))
 
-            // Send full generation request
+            setGenerationStage("Retrieving component knowledge base...")
+            await new Promise((resolve) => setTimeout(resolve, 1500))
+
+            setGenerationStage("Generating website with AI...")
+
+            // Send generation request and wait for completion
             const response = await fetch("/api/generate-ultimate-website", {
                 method: "POST",
                 headers: {
@@ -334,7 +322,7 @@ export default function Home() {
                 },
                 body: JSON.stringify({
                     description: input,
-                    websiteName: websiteName || "Your Business",
+                    websiteName: websiteName,
                     industry: selectedIndustry,
                     style: selectedStyle,
                     aiProvider: aiProvider,
@@ -356,42 +344,52 @@ export default function Home() {
                 throw new Error(errorData.error || `Server responded with ${response.status}`)
             }
 
+            setGenerationStage("Processing AI response...")
             const result = await response.json()
-            console.log("✅ Received enhanced website data:", result)
+            console.log("✅ Received website data:", result)
 
-            if (!result || typeof result !== "object") {
-                throw new Error("Invalid response data")
+            if (!result || !result.success || !result.components) {
+                throw new Error("Invalid response from AI generator")
             }
+
+            setGenerationStage("Finalizing website...")
 
             // Ensure proper data structure
             const websiteData = {
-                components: result.components || [],
-                metadata: result.metadata || {},
-                websiteName: websiteName || "Your Business",
-                industry: selectedIndustry || "technology",
-                style: selectedStyle || "modern",
+                components: result.components,
+                metadata: result.metadata || {
+                    title: `${websiteName} - Professional Website`,
+                    description: input.substring(0, 160),
+                    industry: selectedIndustry,
+                    style: selectedStyle,
+                },
+                colors: result.colors || {},
+                content: result.content || {},
+                websiteName: websiteName,
+                industry: selectedIndustry,
+                style: selectedStyle,
                 description: input,
                 generatedAt: new Date().toISOString(),
                 success: true,
+                aiUsed: result.aiUsed || aiProvider,
             }
 
-            console.log("💾 Storing website data:", websiteData)
-
-            // Update preview with real data
-            setPreviewData(websiteData)
+            console.log("💾 Storing complete website data:", websiteData)
 
             // Store the website data in localStorage
             localStorage.setItem("generatedWebsite", JSON.stringify(websiteData))
 
-            // Redirect to preview after a short delay
-            setTimeout(() => {
-                router.push("/preview")
-            }, 1000)
+            setGenerationStage("Redirecting to preview...")
+            await new Promise((resolve) => setTimeout(resolve, 500))
+
+            // Navigate to preview
+            router.push("/preview")
         } catch (error) {
             console.error("❌ Error generating website:", error)
             setError(error instanceof Error ? error.message : "An unexpected error occurred")
         } finally {
             setIsGenerating(false)
+            setGenerationStage("")
         }
     }
 
@@ -400,6 +398,81 @@ export default function Home() {
     }
 
     const selectedIndustryData = industries.find((ind) => ind.value === selectedIndustry)
+
+    // Show loading screen during generation
+    if (isGenerating) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center p-4">
+                <Card className="w-full max-w-md bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+                    <CardHeader className="text-center">
+                        <div className="mx-auto mb-4 relative">
+                            <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                            <Brain className="w-8 h-8 text-purple-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                        </div>
+                        <CardTitle className="text-white">Generating Your Website</CardTitle>
+                        <p className="text-gray-400 text-sm">
+                            AI is creating a comprehensive {selectedIndustry} website for {websiteName}
+                        </p>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-gray-300">{generationStage}</span>
+                                <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
+                            </div>
+                            <div className="w-full bg-gray-700 rounded-full h-2">
+                                <div
+                                    className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-1000"
+                                    style={{
+                                        width: generationStage.includes("Initializing")
+                                            ? "20%"
+                                            : generationStage.includes("Analyzing")
+                                                ? "40%"
+                                                : generationStage.includes("Retrieving")
+                                                    ? "60%"
+                                                    : generationStage.includes("Generating")
+                                                        ? "80%"
+                                                        : generationStage.includes("Processing")
+                                                            ? "90%"
+                                                            : "95%",
+                                    }}
+                                ></div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gray-900/50 rounded-lg p-4 space-y-2">
+                            <h4 className="text-white font-semibold text-sm">Generation Details:</h4>
+                            <div className="space-y-1 text-xs text-gray-400">
+                                <div className="flex justify-between">
+                                    <span>Business:</span>
+                                    <span className="text-white">{websiteName}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Industry:</span>
+                                    <span className="text-white capitalize">{selectedIndustry}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Style:</span>
+                                    <span className="text-white capitalize">{selectedStyle}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>AI Model:</span>
+                                    <span className="text-purple-400">{aiProvider === "gemini-rag" ? "Gemini RAG" : aiProvider}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Alert className="bg-blue-900/20 border-blue-700 text-blue-300">
+                            <Database className="h-4 w-4" />
+                            <AlertDescription className="text-xs">
+                                Using comprehensive component dataset with industry-specific knowledge base
+                            </AlertDescription>
+                        </Alert>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="flex min-h-screen flex-col bg-black overflow-hidden">
@@ -548,7 +621,7 @@ export default function Home() {
                                     <div className="space-y-3">
                                         <Label htmlFor="website-name" className="text-white text-base font-semibold flex items-center">
                                             <Briefcase className="h-4 w-4 mr-2 text-purple-400" />
-                                            Business Name
+                                            Business Name *
                                         </Label>
                                         <Input
                                             id="website-name"
@@ -563,7 +636,7 @@ export default function Home() {
                                     <div className="space-y-3">
                                         <Label htmlFor="industry" className="text-white text-base font-semibold flex items-center">
                                             <Target className="h-4 w-4 mr-2 text-purple-400" />
-                                            Industry
+                                            Industry *
                                         </Label>
                                         <Select value={selectedIndustry} onValueChange={(value) => setSelectedIndustry(value)} required>
                                             <SelectTrigger className="bg-black/40 border-purple-500/30 text-white h-14 text-lg rounded-xl focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20">
@@ -625,7 +698,7 @@ export default function Home() {
                                     <div className="space-y-3">
                                         <Label htmlFor="style" className="text-white text-base font-semibold flex items-center">
                                             <Palette className="h-4 w-4 mr-2 text-purple-400" />
-                                            Design Style
+                                            Design Style *
                                         </Label>
                                         <Select value={selectedStyle} onValueChange={(value) => setSelectedStyle(value)}>
                                             <SelectTrigger className="bg-black/40 border-purple-500/30 text-white h-14 text-lg rounded-xl focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20">
@@ -661,10 +734,16 @@ export default function Home() {
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent className="bg-gray-900 border-purple-500/30 rounded-xl">
+                                                <SelectItem value="gemini-rag" className="text-white hover:bg-purple-800/50 rounded-lg m-1 p-3">
+                                                    <div className="flex items-center space-x-2">
+                                                        <Sparkles className="h-4 w-4 text-emerald-400" />
+                                                        <span>Gemini RAG (Recommended)</span>
+                                                    </div>
+                                                </SelectItem>
                                                 <SelectItem value="enhanced" className="text-white hover:bg-purple-800/50 rounded-lg m-1 p-3">
                                                     <div className="flex items-center space-x-2">
                                                         <Award className="h-4 w-4 text-yellow-400" />
-                                                        <span>Enhanced Template (Recommended)</span>
+                                                        <span>Enhanced Template</span>
                                                     </div>
                                                 </SelectItem>
                                                 {aiAvailability.wizardlm && (
@@ -775,7 +854,7 @@ export default function Home() {
                                 {/* Enhanced Submit Button */}
                                 <Button
                                     type="submit"
-                                    disabled={isGenerating || !input.trim()}
+                                    disabled={isGenerating || !input.trim() || !websiteName.trim() || !selectedIndustry}
                                     className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 text-white py-8 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                 >
                                     {isGenerating ? (
@@ -825,45 +904,6 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* Enhanced Preview Section */}
-                {showPreview && previewData && (
-                    <section id="preview-section" className="py-20 bg-gradient-to-br from-gray-900 via-purple-900/10 to-gray-900">
-                        <div className="container mx-auto px-4">
-                            <div className="text-center mb-12">
-                                <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center">
-                                    <Sparkles className="h-8 w-8 mr-3 text-purple-400" />
-                                    Preview Your Website
-                                </h2>
-                                <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                    Here's a preview of your generated website. Full generation will complete shortly...
-                                </p>
-                                <div className="mt-6 flex justify-center space-x-4">
-                                    <Button
-                                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105"
-                                        onClick={() => {
-                                            localStorage.setItem("generatedWebsite", JSON.stringify(previewData))
-                                            router.push("/preview")
-                                        }}
-                                    >
-                                        <Globe className="h-5 w-5 mr-2" />
-                                        View Full Preview
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 px-8 py-3 rounded-xl font-semibold"
-                                        onClick={() => setShowPreview(false)}
-                                    >
-                                        Close Preview
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className="border-2 border-purple-500/30 rounded-3xl overflow-hidden shadow-2xl max-w-5xl mx-auto bg-gradient-to-br from-black/50 to-purple-900/20 backdrop-blur-sm">
-                                <WebsiteRenderer websiteData={previewData} />
-                            </div>
-                        </div>
-                    </section>
-                )}
-
                 {/* Enhanced Features Section */}
                 <section className="py-24 bg-gradient-to-br from-gray-900 via-black to-gray-900">
                     <div className="container mx-auto px-4">
@@ -879,7 +919,7 @@ export default function Home() {
                             {[
                                 { text: "20+ Industries", color: "from-green-600 to-emerald-600" },
                                 { text: "Real Unsplash Images", color: "from-blue-600 to-cyan-600" },
-                                { text: "Enhanced WizardLM", color: "from-purple-600 to-violet-600" },
+                                { text: "Enhanced Gemini RAG", color: "from-purple-600 to-violet-600" },
                                 { text: "Interactive Features", color: "from-orange-600 to-red-600" },
                                 { text: "Booking Systems", color: "from-pink-600 to-rose-600" },
                                 { text: "Portfolio Sections", color: "from-cyan-600 to-blue-600" },
@@ -899,9 +939,9 @@ export default function Home() {
                             {[
                                 {
                                     icon: Sparkles,
-                                    title: "Enhanced AI with WizardLM",
+                                    title: "Enhanced AI with Gemini RAG",
                                     description:
-                                        "Advanced business analysis and industry-specific content generation with real professional images.",
+                                        "Advanced business analysis and industry-specific content generation with comprehensive knowledge base.",
                                     color: "from-purple-500 to-violet-500",
                                 },
                                 {

@@ -1,0 +1,242 @@
+{
+  "components": [
+    {
+      "template_name": "CreativeHero",
+      "description": "A dynamic hero section with customizable layouts, animations, and call-to-action buttons",
+      "component_name": "CreativeHero",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "description": "string",
+        "buttons": "Array<{label: string, link: string, type: string}>",
+        "backgroundColor": "string",
+        "textColor": "string",
+        "backgroundImage": "string"
+      },
+      "defaultProps": {
+        "title": "Welcome to Our Business",
+        "subtitle": "Excellence in Every Detail",
+        "description": "We provide exceptional services that exceed expectations and deliver outstanding results for our clients.",
+        "buttons": [
+          { "label": "Get Started", "link": "#contact", "type": "primary" },
+          { "label": "Learn More", "link": "#about", "type": "outline" }
+        ],
+        "backgroundColor": "#ffffff",
+        "textColor": "#333333"
+      },
+      "subsections": ["Hero Content", "Call-to-Action Buttons", "Background Elements"],
+      "dependencies": ["Button", "Next.js Link"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "hero",
+      "filepath": "system/heroes/CreativeHero.tsx"
+    },
+    {
+      "template_name": "GallerySection",
+      "description": "A responsive image gallery with lightbox functionality and category filtering",
+      "component_name": "GallerySection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "images": "Array<{url: string, alt: string, title?: string, category?: string}>",
+        "columns": "number",
+        "showCategories": "boolean"
+      },
+      "defaultProps": {
+        "title": "Our Gallery",
+        "subtitle": "Explore our work and achievements",
+        "images": [
+          { "url": "/placeholder.svg?height=400&width=600", "alt": "Gallery Image 1", "title": "Featured Work" },
+          { "url": "/placeholder.svg?height=400&width=600", "alt": "Gallery Image 2", "title": "Our Projects" }
+        ],
+        "columns": 3,
+        "showCategories": false
+      },
+      "subsections": ["Gallery Grid", "Category Filters", "Lightbox Modal"],
+      "dependencies": ["Card", "Button", "Dialog"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "gallery",
+      "filepath": "system/gallery/GallerySection.tsx"
+    },
+    {
+      "template_name": "MenuSection",
+      "description": "Restaurant menu display with categories, pricing, and item descriptions",
+      "component_name": "MenuSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "categories": "Array<string>",
+        "menuItems": "Array<{name: string, description: string, price: string, category: string, image?: string}>",
+        "showImages": "boolean"
+      },
+      "defaultProps": {
+        "title": "Our Menu",
+        "subtitle": "Delicious dishes made with fresh ingredients",
+        "categories": ["Appetizers", "Main Courses", "Desserts", "Beverages"],
+        "menuItems": [
+          {
+            "name": "Caesar Salad",
+            "description": "Fresh romaine lettuce with parmesan cheese",
+            "price": "$12",
+            "category": "Appetizers"
+          },
+          {
+            "name": "Grilled Salmon",
+            "description": "Atlantic salmon with seasonal vegetables",
+            "price": "$28",
+            "category": "Main Courses"
+          }
+        ],
+        "showImages": true
+      },
+      "subsections": ["Menu Categories", "Item Cards", "Pricing Display"],
+      "dependencies": ["Card", "Badge", "Tabs"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "menu",
+      "industries": ["restaurant"],
+      "filepath": "system/industry/restaurant/MenuSection.tsx"
+    },
+    {
+      "template_name": "ServicesSection",
+      "description": "Professional services showcase with icons, descriptions, and call-to-action",
+      "component_name": "ServicesSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "services": "Array<{title: string, description: string, icon?: string, features?: Array<string>}>",
+        "layout": "string",
+        "backgroundColor": "string"
+      },
+      "defaultProps": {
+        "title": "Our Services",
+        "subtitle": "Comprehensive solutions for your needs",
+        "services": [
+          { "title": "Consulting", "description": "Expert advice and strategic planning", "icon": "Users" },
+          { "title": "Implementation", "description": "Professional execution of solutions", "icon": "Settings" },
+          { "title": "Support", "description": "Ongoing maintenance and assistance", "icon": "HeadphonesIcon" }
+        ],
+        "layout": "grid",
+        "backgroundColor": "bg-gray-50"
+      },
+      "subsections": ["Service Cards", "Feature Lists", "Contact CTA"],
+      "dependencies": ["Card", "Button", "Lucide Icons"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "services",
+      "filepath": "system/services/ServicesSection.tsx"
+    },
+    {
+      "template_name": "PortfolioSection",
+      "description": "Project showcase with filtering, detailed views, and case studies",
+      "component_name": "PortfolioSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "projects": "Array<{title: string, description: string, image: string, category: string, technologies?: Array<string>, link?: string}>",
+        "categories": "Array<string>",
+        "showFilters": "boolean"
+      },
+      "defaultProps": {
+        "title": "Our Portfolio",
+        "subtitle": "Successful projects and satisfied clients",
+        "projects": [
+          {
+            "title": "E-commerce Platform",
+            "description": "Modern online store with advanced features",
+            "image": "/placeholder.svg?height=300&width=400",
+            "category": "Web Development"
+          },
+          {
+            "title": "Mobile App",
+            "description": "Cross-platform mobile application",
+            "image": "/placeholder.svg?height=300&width=400",
+            "category": "Mobile Development"
+          }
+        ],
+        "categories": ["All", "Web Development", "Mobile Development", "Design"],
+        "showFilters": true
+      },
+      "subsections": ["Project Grid", "Category Filters", "Project Details"],
+      "dependencies": ["Card", "Badge", "Button", "Tabs"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "portfolio",
+      "industries": ["technology", "design", "marketing"],
+      "filepath": "system/portfolio/PortfolioSection.tsx"
+    },
+    {
+      "template_name": "ProcessSection",
+      "description": "Step-by-step process visualization with timelines and detailed explanations",
+      "component_name": "ProcessSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "steps": "Array<{title: string, description: string, icon?: string, duration?: string}>",
+        "layout": "string"
+      },
+      "defaultProps": {
+        "title": "Our Process",
+        "subtitle": "How we deliver exceptional results",
+        "steps": [
+          {
+            "title": "Discovery",
+            "description": "Understanding your needs and requirements",
+            "icon": "Search",
+            "duration": "1-2 weeks"
+          },
+          {
+            "title": "Planning",
+            "description": "Creating detailed project roadmap",
+            "icon": "Map",
+            "duration": "1 week"
+          },
+          { "title": "Execution", "description": "Implementing the solution", "icon": "Cog", "duration": "4-8 weeks" },
+          {
+            "title": "Delivery",
+            "description": "Final testing and deployment",
+            "icon": "CheckCircle",
+            "duration": "1 week"
+          }
+        ],
+        "layout": "timeline"
+      },
+      "subsections": ["Process Steps", "Timeline View", "Duration Indicators"],
+      "dependencies": ["Card", "Lucide Icons", "Progress"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "process",
+      "filepath": "system/process/ProcessSection.tsx"
+    },
+    {
+      "template_name": "TeamSection",
+      "description": "Team member profiles with photos, roles, and social links",
+      "component_name": "TeamSection",
+      "props": {
+        "title": "string",
+        "subtitle": "string",
+        "members": "Array<{name: string, role: string, bio: string, image: string, social?: Array<{platform: string, url: string}>}>",
+        "layout": "string"
+      },
+      "defaultProps": {
+        "title": "Meet Our Team",
+        "subtitle": "Experienced professionals dedicated to your success",
+        "members": [
+          {
+            "name": "John Smith",
+            "role": "CEO & Founder",
+            "bio": "Visionary leader with 15+ years of experience",
+            "image": "/placeholder.svg?height=300&width=300"
+          },
+          {
+            "name": "Sarah Johnson",
+            "role": "Lead Developer",
+            "bio": "Full-stack developer passionate about clean code",
+            "image": "/placeholder.svg?height=300&width=300"
+          }
+        ],
+        "layout": "grid"
+      },
+      "subsections": ["Team Grid", "Member Cards", "Social Links"],
+      "dependencies": ["Card", "Avatar", "Button", "Lucide Icons"],
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "category": "team",
+      "filepath": "system/team/TeamSection.tsx"
+    }
+  ]
+}

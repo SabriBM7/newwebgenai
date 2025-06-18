@@ -22,6 +22,7 @@ import {
     AlertCircle,
     RefreshCw,
 } from "lucide-react"
+// Corrected import path assuming component-factory is at the root of components
 import ComponentFactory from "@/components/component-factory"
 
 interface WebsiteData {
@@ -55,15 +56,8 @@ export default function PreviewPage() {
             const data = JSON.parse(stored)
             console.log("📄 Loaded website data:", data)
 
-            // Validate the data structure
-            if (!data || typeof data !== "object") {
-                throw new Error("Invalid website data format")
-            }
-
-            // Ensure components array exists
-            if (!Array.isArray(data.components)) {
-                console.warn("⚠️ Components not found, using empty array")
-                data.components = []
+            if (!data || typeof data !== "object" || !Array.isArray(data.components)) {
+                throw new Error("Invalid or corrupted website data format.")
             }
 
             setWebsiteData(data)
@@ -77,7 +71,6 @@ export default function PreviewPage() {
 
     const handleCopyCode = async () => {
         if (!websiteData) return
-
         try {
             const codeString = JSON.stringify(websiteData, null, 2)
             await navigator.clipboard.writeText(codeString)
@@ -90,7 +83,6 @@ export default function PreviewPage() {
 
     const handleDownload = () => {
         if (!websiteData) return
-
         const dataStr = JSON.stringify(websiteData, null, 2)
         const dataBlob = new Blob([dataStr], { type: "application/json" })
         const url = URL.createObjectURL(dataBlob)
@@ -198,7 +190,7 @@ export default function PreviewPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
             {/* Header */}
-            <div className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
+            <header className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
@@ -206,7 +198,7 @@ export default function PreviewPage() {
                                 <ArrowLeft className="h-4 w-4 mr-2" />
                                 Back to Generator
                             </Button>
-                            <div className="h-6 w-px bg-gray-700"></div>
+                            <div className="h-6 w-px bg-gray-700" />
                             <div>
                                 <h1 className="text-xl font-bold text-white">{websiteData.websiteName}</h1>
                                 <p className="text-sm text-gray-400">
@@ -231,11 +223,12 @@ export default function PreviewPage() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </header>
 
-            {/* Stats */}
-            <div className="container mx-auto px-4 py-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {/* Main Content */}
+            <main className="container mx-auto px-4 py-6">
+                {/* Stats */}
+                <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     {stats.map((stat, index) => (
                         <Card key={index} className="bg-gray-800/50 border-gray-700">
                             <CardContent className="p-4">
@@ -243,13 +236,13 @@ export default function PreviewPage() {
                                     <stat.icon className={`h-5 w-5 ${stat.color}`} />
                                     <div>
                                         <p className="text-sm text-gray-400">{stat.label}</p>
-                                        <p className="font-semibold text-white">{stat.value}</p>
+                                        <p className="font-semibold text-white">{String(stat.value)}</p>
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
                     ))}
-                </div>
+                </section>
 
                 {/* Tabs */}
                 <div className="flex space-x-1 mb-6 bg-gray-800/50 p-1 rounded-lg w-fit">
@@ -273,7 +266,7 @@ export default function PreviewPage() {
                     ))}
                 </div>
 
-                {/* Content */}
+                {/* Tab Content */}
                 <div className="space-y-6">
                     {activeTab === "preview" && (
                         <Card className="bg-gray-800/30 border-gray-700">
@@ -287,15 +280,15 @@ export default function PreviewPage() {
                                 <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
                                     <div className="h-8 bg-gray-100 flex items-center px-4 space-x-2">
                                         <div className="flex space-x-1">
-                                            <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                                            <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                                            <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                                            <div className="w-3 h-3 bg-red-400 rounded-full" />
+                                            <div className="w-3 h-3 bg-yellow-400 rounded-full" />
+                                            <div className="w-3 h-3 bg-green-400 rounded-full" />
                                         </div>
                                         <div className="flex-1 bg-white rounded px-3 py-1 text-xs text-gray-600">
                                             {websiteData.websiteName?.toLowerCase().replace(/\s+/g, "")}.com
                                         </div>
                                     </div>
-                                    <div className="max-h-[600px] overflow-y-auto">
+                                    <div className="max-h-[80vh] overflow-y-auto">
                                         {websiteData.components && websiteData.components.length > 0 ? (
                                             <ComponentFactory components={websiteData.components} />
                                         ) : (
@@ -344,51 +337,17 @@ export default function PreviewPage() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="space-y-4">
-                                    <div className="bg-gray-900 rounded-lg p-4">
-                                        <h4 className="text-white font-semibold mb-2">Website Metadata</h4>
-                                        <div className="text-sm text-gray-300 space-y-1">
-                                            <p>
-                                                <strong>Name:</strong> {websiteData.websiteName}
-                                            </p>
-                                            <p>
-                                                <strong>Industry:</strong> {websiteData.industry}
-                                            </p>
-                                            <p>
-                                                <strong>Style:</strong> {websiteData.style}
-                                            </p>
-                                            <p>
-                                                <strong>Components:</strong> {websiteData.components?.length || 0}
-                                            </p>
-                                            <p>
-                                                <strong>Generated:</strong> {websiteData.generatedAt}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-gray-900 rounded-lg p-4">
-                                        <h4 className="text-white font-semibold mb-2">Component Types</h4>
-                                        <div className="flex flex-wrap gap-2">
-                                            {websiteData.components?.map((comp, idx) => (
-                                                <Badge key={idx} variant="outline" className="text-xs">
-                                                    {comp.type || "Unknown"}
-                                                </Badge>
-                                            )) || <span className="text-gray-400">No components</span>}
-                                        </div>
-                                    </div>
-
-                                    <details className="bg-gray-900 rounded-lg p-4">
-                                        <summary className="text-white font-semibold cursor-pointer">Raw Data</summary>
-                                        <pre className="text-xs text-gray-300 mt-2 overflow-auto max-h-96">
-                      {JSON.stringify(websiteData, null, 2)}
-                    </pre>
-                                    </details>
-                                </div>
+                                <details className="bg-gray-900 rounded-lg p-4" open>
+                                    <summary className="text-white font-semibold cursor-pointer">Raw Data</summary>
+                                    <pre className="text-xs text-gray-300 mt-2 overflow-auto max-h-96">
+                    {JSON.stringify(websiteData, null, 2)}
+                  </pre>
+                                </details>
                             </CardContent>
                         </Card>
                     )}
                 </div>
-            </div>
+            </main>
         </div>
     )
 }

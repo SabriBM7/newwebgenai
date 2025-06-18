@@ -1,3 +1,82 @@
+// This file is based on the version from the previous response,
+// assuming it's located at src/lib/types.ts
+
+export interface ComponentPropDefinition {
+    type: string // e.g., "string", "number", "boolean", "array", "object"
+    required?: boolean
+    default?: any
+    description?: string
+    itemType?: string // For arrays, e.g., "{ label: string; href: string }"
+    options?: string[] // For enums or select-like props
+}
+
+export interface ComponentSchema {
+    id?: string // Made optional
+    template_name: string
+    component_name: string
+    description: string
+    category: string
+    industries: string[]
+    tags?: string[] // Made optional
+    props: Record<string, string | object | any>
+    defaultProps: Record<string, any>
+    expectedPropsStructure?: Record<string, ComponentPropDefinition>
+    subsections?: string[]
+    dependencies?: string[]
+    filepath: string
+    exampleUsage?: string
+}
+
+export interface WebsiteGenerationParams {
+    websiteName: string
+    description: string
+    industry: string
+    style: string
+    targetAudience?: string
+    businessGoals?: string[]
+    uniqueSellingPoints?: string[]
+    includeImages?: boolean
+    componentCount?: number
+    aiProvider?: string
+}
+
+export interface GeneratedWebsiteComponent {
+    type: string
+    props: Record<string, any>
+    id?: string
+}
+
+export interface GeneratedWebsite {
+    components: GeneratedWebsiteComponent[]
+    metadata: {
+        title: string
+        description: string
+        keywords?: string[]
+        industry: string
+        style: string
+        aiUsed: string
+        componentsUsed: number
+        generatedAt: string
+        [key: string]: any
+    }
+    colors: {
+        primary: string
+        secondary: string
+        accent: string
+        background: string
+        text: string
+        [key: string]: any
+    }
+    content?: Record<string, any>
+    images?: Record<string, string>
+    success?: boolean
+    message?: string
+    documentsUsed?: number
+    componentsAvailable?: number
+    aiProvider?: string
+}
+
+// Your existing types from the attachment
 export type MenuItem = {
     label: string
     link: string
